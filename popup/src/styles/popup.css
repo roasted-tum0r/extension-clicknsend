@@ -1,0 +1,68 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 6px;
+}
+
+button {
+  width: 100%;
+  padding: 8px;
+  cursor: pointer;
+}
+.popup-container {
+  width: 320px;
+  padding: 16px;
+  background: #0f0f0f;
+  color: #fff;
+  font-family: system-ui, sans-serif;
+}
+
+.popup-header h1 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.popup-header p {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 16px;
+}
+
+.email-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+label {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+input,
+select,
+textarea {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.send-btn {
+  margin-top: 8px;
+  padding: 10px;
+  background: #fff;
+  color: #000;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}

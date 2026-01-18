@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Click Send Em Bot",
+  "version": "1.0.0",
+  "description": "Right-click an email and send emails using templates",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "tabs"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "dist/popup/index.html"
+  }
+}
