@@ -8,10 +8,31 @@
     "storage",
     "tabs"
   ],
+  "action": {
+    "default_popup": "dist/popup/index.html"
+  },
   "background": {
     "service_worker": "background.js"
   },
-  "action": {
-    "default_popup": "dist/popup/index.html"
-  }
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "./contentScript.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "dist/popup/index.js",
+        "dist/popup/index.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
 }
