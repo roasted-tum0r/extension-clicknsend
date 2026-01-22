@@ -1,6 +1,6 @@
-Chrome Extension: Click’n’Send
+Chrome Extension: Open SesameE-mail
 
-Click’n’Send is a lightweight Chrome extension designed to make sending emails faster and more organized. With a simple right-click on any email address on a webpage (LinkedIn, Naukri, Indeed, or any site), you can instantly open a popup to:
+Open SesameE-mail is a lightweight Chrome extension designed to make sending emails faster and more organized. With a simple right-click on any email address on a webpage (LinkedIn, Naukri, Indeed, or any site), you can instantly open a popup to:
 
 Select from pre-defined email templates (e.g., job applications, follow-ups, casual greetings)
 

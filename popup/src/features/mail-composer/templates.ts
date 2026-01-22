@@ -1,8 +1,8 @@
-import type { TemplateType } from "./types";
+import type { MailDraft, TemplateType } from "./types";
 
 export const templates: Record<
   Exclude<TemplateType, "custom">,
-  { subject: string; body: string }
+  Omit<MailDraft, "to">
 > = {
   job_application: {
     subject: "Application for [Role] - [Your Name]",

@@ -11,6 +11,7 @@ function App({ initialEmail }: { initialEmail?: string }) {
   });
 
   useEffect(() => {
+    console.log("useEffect applying theme:", theme);
     localStorage.setItem("theme", theme);
     // Apply theme to root element for tailwind 'class' mode
     // Since we want it scoped to this component tree, we apply it to the container.
@@ -19,7 +20,12 @@ function App({ initialEmail }: { initialEmail?: string }) {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    console.log("toggleTheme called. Current theme:", theme);
+    setTheme((prev) => {
+      const newTheme = prev === "dark" ? "light" : "dark";
+      console.log("Setting theme to:", newTheme);
+      return newTheme;
+    });
   };
 
   return (

@@ -12,7 +12,10 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
         {/* Theme Toggle */}
         {toggleTheme && (
           <button
-            onClick={toggleTheme}
+            onClick={() => {
+              console.log("Header toggle button clicked");
+              toggleTheme?.();
+            }}
             className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors rounded-full -ml-2 hover:bg-gray-200 dark:hover:bg-gray-800"
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           >
