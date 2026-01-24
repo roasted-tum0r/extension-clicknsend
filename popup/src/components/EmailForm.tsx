@@ -103,7 +103,15 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
   }, [subject, message]);
 
   const handleTagChange = (tag: string, value: string) => {
-    setTagValues((prev) => ({ ...prev, [tag]: value }));
+    const newValues = { ...tagValues, [tag]: value };
+    setTagValues(newValues);
+
+    // Persist to sync storage immediately (debounced implicitly by user typing)
+    const tagsToSave: Record<string, string> = {};
+    detectedTags.forEach(t => {
+      if (newValues[t]) tagsToSave[t] = newValues[t];
+    });
+    setStoredTags(tagsToSave);
   };
 
   const handleTagClick = (tag: string) => {

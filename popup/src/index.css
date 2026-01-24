@@ -88,7 +88,7 @@
   border: 1px solid transparent;
 }
 
-.dark .tag-token {}
+
 
 .tag-token:hover {
   filter: brightness(1.1);
@@ -101,26 +101,16 @@
   max-height: 300px;
   overflow-y: auto;
   outline: none;
-  padding: 12px;
-  font-size: 14px;
-  line-height: 1.6;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  background: white;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
+  font-family: inherit;
   transition: all 0.2s ease;
 }
 
 .dark .tokenized-editor {
-  background: rgba(31, 41, 55, 0.3);
-  border-color: #374151;
   color: #f3f4f6;
 }
 
 .tokenized-editor:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  /* Box shadow and border handled by Tailwind */
 }
 
 /* Pulse Animations */

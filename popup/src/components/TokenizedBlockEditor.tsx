@@ -11,8 +11,7 @@ interface TokenizedBlockEditorProps {
 
 /**
  * A highly interactive "Outlook-style" editor.
- * Tags are rendered as vibrant emerald green pills when filled.
- * Includes real-time autocomplete suggestions for existing tags.
+ * Uses structured DOM reconstruction to ensure template integrity.
  */
 export default function TokenizedBlockEditor({
     value,
@@ -54,7 +53,7 @@ export default function TokenizedBlockEditor({
             if (node.nodeType === Node.TEXT_NODE) {
                 const nextCharCount = charCount + node.textContent!.length;
                 if (pos <= nextCharCount) {
-                    range.setStart(node, pos - charCount);
+                    range.setStart(node, Math.max(0, pos - charCount));
                     range.collapse(true);
                     found = true;
                 }
@@ -83,96 +82,130 @@ export default function TokenizedBlockEditor({
     // Parse raw template to HTML with pills
     const parseToHTML = useCallback((raw: string) => {
         if (!raw) return "";
+        // Replace newlines with <br> for contenteditable display
+        const textWithBreaks = raw.split("\n").join("<br>");
         const tokenRegex = /({{[^}]+}})/g;
-        return raw.split(tokenRegex).map(part => {
+
+        const parts = textWithBreaks.split(tokenRegex);
+        return parts.map(part => {
             if (part.startsWith('{{') && part.endsWith('}}')) {
                 const tagName = part.slice(2, -2).trim();
                 const tagValue = tagValues[tagName];
                 const isFilled = !!tagValue;
 
                 const displayValue = isFilled ? tagValue : part;
-                // Use explicit Emerald colors for SUCCESS
                 const pillClass = isFilled
                     ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/40 font-bold shadow-sm"
                     : "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-700/50 animate-pulse-soft";
 
-                return `<span class="tag-token ${pillClass}" data-tag="${tagName}" contenteditable="false">${escapeHTML(displayValue)}</span>`;
+                // We store the original {{tag}} in a data attribute so we can reconstruct the string accurately
+                return `<span class="tag-token ${pillClass}" data-raw-tag="${part}" data-tag-name="${tagName}" contenteditable="false"><span class="opacity-40 text-[9px] mr-1">{{</span>${escapeHTML(displayValue)}<span class="opacity-40 text-[9px] ml-1">}}</span></span>`;
             }
-            return escapeHTML(part);
+            // Need to preserve <br> elements if they were part of the split text part
+            return part; // part already contains <br> from our initial split/join
         }).join("");
     }, [tagValues]);
 
     // Value sync with Caret Preservation
     useEffect(() => {
-        if (editorRef.current) {
-            const currentHTML = editorRef.current.innerHTML;
+        if (editorRef.current && !isFocused) {
+            const currentTemplate = reconstructTemplate();
             const targetHTML = parseToHTML(value);
 
-            if (currentHTML !== targetHTML) {
-                const pos = getCaretData();
+            if (currentTemplate !== value) {
                 editorRef.current.innerHTML = targetHTML;
-                if (isFocused && pos !== null) {
-                    // Immediate restoration to avoid flickering
-                    setCaretPosition(pos);
-                }
             }
         }
     }, [value, parseToHTML, isFocused]);
 
-    const handleInput = () => {
-        if (editorRef.current) {
-            const text = editorRef.current.innerText;
-            if (text !== value) {
-                onChange(text);
-            }
+    // Reconstruct the template string from the DOM
+    const reconstructTemplate = () => {
+        if (!editorRef.current) return "";
+        let result = "";
 
-            // Simple Autocomplete Logic
-            const selection = window.getSelection();
-            if (selection && selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const preCaretText = range.startContainer.textContent?.slice(0, range.startOffset) || "";
-                const lastBraces = preCaretText.lastIndexOf("{{");
-
-                if (lastBraces !== -1 && !preCaretText.includes("}}", lastBraces)) {
-                    const query = preCaretText.slice(lastBraces + 2).toLowerCase();
-                    const allTags = Object.keys(tagValues);
-                    const filtered = allTags.filter(t => t.toLowerCase().includes(query));
-                    if (filtered.length > 0) {
-                        setSuggestions(filtered);
-                        setShowSuggestions(true);
-                        return;
-                    }
+        const traverse = (node: Node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                result += node.textContent;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                const el = node as HTMLElement;
+                if (el.classList.contains('tag-token')) {
+                    result += el.getAttribute('data-raw-tag') || "";
+                } else if (el.tagName === 'BR') {
+                    result += "\n";
+                } else {
+                    Array.from(node.childNodes).forEach(traverse);
                 }
             }
-            setShowSuggestions(false);
+        };
+
+        Array.from(editorRef.current.childNodes).forEach(traverse);
+        return result;
+    };
+
+    const handleInput = () => {
+        const template = reconstructTemplate();
+        if (template !== value) {
+            onChange(template);
         }
+
+        // Autocomplete Logic
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const preCaretText = range.startContainer.textContent?.slice(0, range.startOffset) || "";
+            const lastBraces = preCaretText.lastIndexOf("{{");
+
+            if (lastBraces !== -1 && !preCaretText.includes("}}", lastBraces)) {
+                const query = preCaretText.slice(lastBraces + 2).toLowerCase();
+                const allTags = Object.keys(tagValues);
+                const filtered = allTags.filter(t => t.toLowerCase().includes(query));
+                if (filtered.length > 0) {
+                    setSuggestions(filtered);
+                    setShowSuggestions(true);
+                    return;
+                }
+            }
+        }
+        setShowSuggestions(false);
     };
 
     const handleSuggestionClick = (tag: string) => {
-        const selection = window.getSelection();
-        if (selection && selection.rangeCount > 0 && editorRef.current) {
-            const text = editorRef.current.innerText;
-            const pos = getCaretData();
+        const text = reconstructTemplate();
+        const pos = getCaretData();
 
-            if (pos !== null) {
-                const preText = text.slice(0, pos);
-                const lastBraces = preText.lastIndexOf("{{");
-                const newText = text.slice(0, lastBraces) + `{{${tag}}}` + text.slice(pos);
-                onChange(newText);
-                setShowSuggestions(false);
-                // We let the useEffect handle the re-render and caret sync
-            }
+        if (pos !== null) {
+            const preText = text.slice(0, pos);
+            const lastBraces = preText.lastIndexOf("{{");
+            const newText = text.slice(0, lastBraces) + `{{${tag}}}` + text.slice(pos);
+            onChange(newText);
+            setShowSuggestions(false);
+
+            // Re-render and restore caret
+            setTimeout(() => {
+                const html = parseToHTML(newText);
+                if (editorRef.current) {
+                    editorRef.current.innerHTML = html;
+                    setCaretPosition(lastBraces + tag.length + 4); // +4 for {{ and }}
+                }
+            }, 0);
         }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (label === "Subject" && e.key === "Enter") {
-            e.preventDefault();
-        }
-        if (showSuggestions) {
-            if (e.key === "Escape") {
-                setShowSuggestions(false);
+        if (e.key === "Enter") {
+            if (label === "Subject") {
+                e.preventDefault();
+            } else {
+                // Manually handle enter to ensure consistency
+                // This prevents the cursor from getting stuck in some browsers
+                document.execCommand('insertLineBreak');
+                e.preventDefault();
+                handleInput();
             }
+        }
+
+        if (showSuggestions && e.key === "Escape") {
+            setShowSuggestions(false);
         }
     };
 
@@ -180,15 +213,15 @@ export default function TokenizedBlockEditor({
         const target = e.target as HTMLElement;
         const tagSpan = target.closest('.tag-token');
         if (tagSpan) {
-            const tagName = tagSpan.getAttribute('data-tag');
+            const tagName = tagSpan.getAttribute('data-tag-name');
             if (tagName && onTagClick) {
                 onTagClick(tagName);
+                e.preventDefault();
                 e.stopPropagation();
             }
         }
     };
 
-    // Filter tags for the outside status tray
     const regex = /\{\{([^}]+)\}\}/g;
     const tagsInText = Array.from(new Set(value.match(regex) || []));
 
@@ -213,7 +246,6 @@ export default function TokenizedBlockEditor({
                     onInput={handleInput}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => {
-                        // Allow button clicks to happen before hiding suggestions
                         setTimeout(() => {
                             setIsFocused(false);
                             setShowSuggestions(false);
@@ -221,7 +253,12 @@ export default function TokenizedBlockEditor({
                     }}
                     onKeyDown={handleKeyDown}
                     onClick={handleClick}
-                    className="tokenized-editor custom-scrollbar cursor-text min-h-[120px]"
+                    className="
+                        tokenized-editor custom-scrollbar cursor-text min-h-[140px] 
+                        p-3 bg-white dark:bg-gray-800/10 border border-gray-200 dark:border-gray-700/50 
+                        rounded-2xl transition-all text-sm leading-relaxed
+                        focus:outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-500/20
+                    "
                     spellCheck={false}
                 />
 
@@ -231,16 +268,16 @@ export default function TokenizedBlockEditor({
                     </div>
                 )}
 
-                {/* Autocomplete Popup */}
                 {showSuggestions && (
-                    <div className="absolute z-50 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl overflow-hidden max-w-xs animate-in slide-in-from-bottom-1 duration-200">
+                    <div className="absolute z-50 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl overflow-hidden max-w-xs transition-all">
                         <div className="p-2 border-b border-gray-100 dark:border-gray-800 text-[9px] font-bold text-gray-400 uppercase tracking-widest">
-                            Available Tags
+                            Existing Tags
                         </div>
                         <div className="max-h-48 overflow-y-auto custom-scrollbar">
                             {suggestions.map(tag => (
                                 <button
                                     key={tag}
+                                    type="button"
                                     onClick={() => handleSuggestionClick(tag)}
                                     className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center justify-between group"
                                 >
@@ -253,7 +290,6 @@ export default function TokenizedBlockEditor({
                 )}
             </div>
 
-            {/* Status Pills Tray */}
             {tagsInText.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
                     {tagsInText.map((tagWithBraces, i) => {
