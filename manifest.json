@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Click Send Em Bot",
+  "name": "Open-SesamE-Mail",
   "version": "1.0.0",
   "description": "Right-click an email and send emails using templates",
   "permissions": [

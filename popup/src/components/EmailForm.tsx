@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import TemplateSelect from "./TemplateSelect";
+import NestedTemplateSelect from "./NestedTemplateSelect";
 import MessageBox from "./MessageBox";
 import SendButton from "./SendButton";
 import { Input } from "./Input";
 import ProviderSelect from "./ProviderSelect";
 import type { EmailProvider } from "./ProviderSelect";
-import { templates } from "../features/mail-composer/templates";
-import type { TemplateType } from "../features/mail-composer/types";
+import { FULL_REGISTRY } from "../features/mail-composer/templates";
+import type { TemplateTypeNew } from "../features/mail-composer/types";
 
 export default function EmailForm({ initialEmail }: { initialEmail?: string }) {
   console.log("Initial email:", initialEmail);
@@ -15,51 +15,41 @@ export default function EmailForm({ initialEmail }: { initialEmail?: string }) {
   const [recipient, setRecipient] = useState(initialEmail || "");
   const [loading, setLoading] = useState(!initialEmail); // Loading state if fetching from storage
 
-  // Provider state (still localStorage is fine for preferences, or move to chrome.storage too? Let's keep provider simple for now or sync both)
+  // Provider state
   const [provider, setProvider] = useState<EmailProvider>(() => {
     return (localStorage.getItem("clicksend_provider") as EmailProvider) || "gmail";
   });
 
-  const [template, setTemplate] = useState<TemplateType | "">("");
+  const [template, setTemplate] = useState<TemplateTypeNew | "">("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
 
-  // Load recipient priority: Props > Chrome Storage > Local Storage
+  // Load recipient priority... (rest of useEffect remains similar)
   useEffect(() => {
-    // 1. If props provided (Injected mode), it wins immediately.
     if (initialEmail) {
       setRecipient(initialEmail);
       setLoading(false);
       return;
     }
 
-    // 2. If no props (Icon mode), try Chrome Storage (freshly saved context menu selection)
     setLoading(true);
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
       chrome.storage.local.get(['clicksend_last_recipient'], (result) => {
         if (result && result.clicksend_last_recipient) {
-          console.log("Loaded from Chrome Storage:", result.clicksend_last_recipient);
           setRecipient(result.clicksend_last_recipient as string);
-          setLoading(false);
         } else {
-          // 3. Fallback to LocalStorage (last typed in popup)
           const local = localStorage.getItem("clicksend_last_recipient");
-          if (local) {
-            console.log("Loaded from LocalStorage:", local);
-            setRecipient(local);
-          }
-          setLoading(false);
+          if (local) setRecipient(local);
         }
+        setLoading(false);
       });
     } else {
-      // Dev fallback
       const local = localStorage.getItem("clicksend_last_recipient");
       if (local) setRecipient(local);
       setLoading(false);
     }
   }, [initialEmail]);
 
-  // Persist recipient changes to BOTH storages
   useEffect(() => {
     if (recipient) {
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
@@ -69,22 +59,21 @@ export default function EmailForm({ initialEmail }: { initialEmail?: string }) {
     }
   }, [recipient]);
 
-  // Persist provider changes
   useEffect(() => {
     localStorage.setItem("clicksend_provider", provider);
   }, [provider]);
 
   const handleTemplateChange = (val: string) => {
-    const newTemplate = val as TemplateType;
+    const newTemplate = val as TemplateTypeNew;
     setTemplate(newTemplate);
 
     if (newTemplate === "custom") {
       setSubject("");
       setMessage("");
-    } else if (newTemplate && newTemplate in templates) {
-      const t = templates[newTemplate as Exclude<TemplateType, "custom">];
-      setSubject(t.subject);
-      setMessage(t.body);
+    } else if (newTemplate && newTemplate in FULL_REGISTRY) {
+      const t = FULL_REGISTRY[newTemplate as Exclude<TemplateTypeNew, "custom">];
+      setSubject(t.draft.subject);
+      setMessage(t.draft.body);
     }
   };
 
@@ -101,7 +90,6 @@ export default function EmailForm({ initialEmail }: { initialEmail?: string }) {
       window.open(`https://mail.google.com/mail/?${params.toString()}`, "_blank");
     }
     else if (provider === "outlook") {
-      // Outlook Web Deep Link
       const url = `https://outlook.office.com/mail/deeplink/compose?to=${encode(recipient)}&subject=${encode(subject)}&body=${encode(message)}`;
       window.open(url, "_blank");
     }
@@ -110,9 +98,8 @@ export default function EmailForm({ initialEmail }: { initialEmail?: string }) {
       window.open(url, "_blank");
     }
     else {
-      // Default mailto
       const url = `mailto:${encode(recipient)}?subject=${encode(subject)}&body=${encode(message)}`;
-      window.open(url, "_self"); // mailto usually handled by system
+      window.open(url, "_self");
     }
   };
 
@@ -126,7 +113,7 @@ export default function EmailForm({ initialEmail }: { initialEmail?: string }) {
         type="email"
       />
 
-      <TemplateSelect value={template} onChange={handleTemplateChange} />
+      <NestedTemplateSelect value={template} onChange={handleTemplateChange} />
 
       <Input
         label="Subject"
