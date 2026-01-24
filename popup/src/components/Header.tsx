@@ -5,7 +5,11 @@ interface HeaderProps {
 
 export default function Header({ theme, toggleTheme }: HeaderProps) {
   return (
-    <header className="mb-0 text-center relative flex flex-col items-center">
+    <header
+      id="clicksend-header"
+      className="mb-0 text-center relative flex flex-col items-center cursor-grab active:cursor-grabbing select-none bg-gray-100 dark:bg-gray-800/50 rounded-t-xl -m-6 p-6 pb-2"
+      title="Drag to move"
+    >
 
       {/* Top Controls Row */}
       <div className="absolute top-0 w-full flex justify-between items-start -mt-2">
@@ -39,14 +43,34 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
         </button>
       </div>
 
-      <div className="mt-8">
-        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 bg-clip-text text-transparent pb-1">
-          Open SesamE-mail
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
-          Send emails faster, without thinking twice
-        </p>
+      <div className="mt-8 flex justify-center">
+        <svg width="300" height="40" viewBox="0 0 300 40" className="drop-shadow-sm">
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor={theme === 'dark' ? '#a5b4fc' : '#3730a3'} />
+              <stop offset="50%" stopColor={theme === 'dark' ? '#c084fc' : '#7e22ce'} />
+              <stop offset="100%" stopColor={theme === 'dark' ? '#818cf8' : '#312e81'} />
+            </linearGradient>
+          </defs>
+          <text
+            x="50%"
+            y="50%"
+            dominantBaseline="middle"
+            textAnchor="middle"
+            fill="url(#logoGradient)"
+            style={{
+              fontSize: '30px',
+              fontWeight: 800,
+              fontFamily: 'Inter, system-ui, sans-serif'
+            }}
+          >
+            Open SesamE-mail
+          </text>
+        </svg>
       </div>
+      <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
+        Send emails faster, without thinking twice
+      </p>
     </header>
   );
 }

@@ -9,7 +9,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: dark !important;
   /* background-color: #242424; REMOVE explicit dark bg to let App.tsx control it */
 
   font-synthesis: none;
@@ -23,7 +23,7 @@
   /* Allow App.tsx to control background/color via Tailwind classes */
   /* background-color: #111827;  <-- REMOVED */
   /* color: #ffffff;             <-- REMOVED */
-  color-scheme: light dark;
+  color-scheme: dark !important;
 }
 
 #icon-root {
@@ -40,8 +40,7 @@
    (THIS IS THE IMPORTANT PART)
 -------------------------------- */
 #clicksend-root {
-  position: fixed;
-  z-index: 999999;
+  background: transparent;
 
   /* Responsive but controlled size */
   width: min(70vw, 420px);
