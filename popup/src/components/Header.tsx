@@ -1,9 +1,11 @@
 interface HeaderProps {
   theme?: string;
   toggleTheme?: () => void;
+  zoom?: number;
+  onZoomChange?: (zoom: number) => void;
 }
 
-export default function Header({ theme, toggleTheme }: HeaderProps) {
+export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: HeaderProps) {
   return (
     <header
       id="clicksend-header"
@@ -13,19 +15,48 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
 
       {/* Top Controls Row */}
       <div className="absolute top-0 w-full flex justify-between items-start -mt-2">
-        {/* Theme Toggle */}
-        {toggleTheme && (
-          <button
-            onClick={() => {
-              console.log("Header toggle button clicked");
-              toggleTheme?.();
-            }}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors rounded-full -ml-2 hover:bg-gray-200 dark:hover:bg-gray-800"
-            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-        )}
+        <div className="flex items-center">
+          {/* Theme Toggle */}
+          {toggleTheme && (
+            <button
+              onClick={() => {
+                console.log("Header toggle button clicked");
+                toggleTheme?.();
+              }}
+              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors rounded-full -ml-2 hover:bg-gray-200 dark:hover:bg-gray-800"
+              title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+          )}
+
+          {/* Zoom Controls */}
+          {onZoomChange && (
+            <div className="flex items-center gap-0.5 ml-1">
+              <button
+                onClick={() => onZoomChange(Math.max(0.8, zoom - 0.1))}
+                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 text-xs font-bold"
+                title="Zoom Out"
+              >
+                A-
+              </button>
+              <button
+                onClick={() => onZoomChange(1.0)}
+                className="px-1 text-[10px] text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors rounded hover:bg-gray-200 dark:hover:bg-gray-800 font-medium"
+                title="Reset Zoom"
+              >
+                {Math.round(zoom * 100)}%
+              </button>
+              <button
+                onClick={() => onZoomChange(Math.min(1.5, zoom + 0.1))}
+                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 text-xs font-bold"
+                title="Zoom In"
+              >
+                A+
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Close Button */}
         <button
