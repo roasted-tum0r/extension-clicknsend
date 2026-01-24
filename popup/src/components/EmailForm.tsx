@@ -8,7 +8,7 @@ import type { EmailProvider } from "./ProviderSelect";
 import { FULL_REGISTRY } from "../features/mail-composer/templates";
 import type { TemplateTypeNew } from "../features/mail-composer/types";
 
-export default function EmailForm({ initialEmail }: { initialEmail?: string }) {
+export default function EmailForm({ initialEmail, theme }: { initialEmail?: string, theme: string }) {
   console.log("Initial email:", initialEmail);
 
   // Recipient state
@@ -129,7 +129,8 @@ export default function EmailForm({ initialEmail }: { initialEmail?: string }) {
         <SendButton
           onClick={handleSend}
           provider={provider}
-          disabled={!recipient}
+          disabled={!recipient || message.length < 1 || subject.length < 1 || template.length < 1}
+          theme={theme}
         />
       </div>
     </div>

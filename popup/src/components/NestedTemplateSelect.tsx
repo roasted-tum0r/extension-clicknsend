@@ -16,7 +16,8 @@ export default function NestedTemplateSelect({ value, onChange }: NestedTemplate
     // Close when clicking outside
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+            const path = event.composedPath();
+            if (containerRef.current && !path.includes(containerRef.current)) {
                 setIsOpen(false);
             }
         }

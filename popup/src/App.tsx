@@ -44,7 +44,7 @@ function App({ initialEmail }: { initialEmail?: string }) {
           <Header theme={theme} toggleTheme={toggleTheme} zoom={zoom} onZoomChange={setZoom} />
         </div>
         <div className="flex-1 overflow-y-auto px-6 pb-6 scrollbar-thin">
-          <EmailForm initialEmail={initialEmail} />
+          <EmailForm initialEmail={initialEmail} theme={theme} />
         </div>
       </div>
     </div>
