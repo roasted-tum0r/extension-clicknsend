@@ -2,16 +2,13 @@
 @config "../tailwind.config.js";
 
 /* ------------------------------
-   Global base styles (unchanged)
+   Global base styles
 -------------------------------- */
 :root {
   font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: dark !important;
-  /* background-color: #242424; REMOVE explicit dark bg to let App.tsx control it */
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -20,50 +17,31 @@
 
 #icon-root,
 #clicksend-root {
-  /* Allow App.tsx to control background/color via Tailwind classes */
-  /* background-color: #111827;  <-- REMOVED */
-  /* color: #ffffff;             <-- REMOVED */
   color-scheme: dark !important;
 }
 
 #icon-root {
   width: 600px;
   min-height: 600px;
-  /* Also Ensure height matches a good ratio */
   display: flex;
   place-items: center;
   margin: 0;
 }
 
-/* ------------------------------
-   Extension popup container
-   (THIS IS THE IMPORTANT PART)
--------------------------------- */
 #clicksend-root {
   background: transparent;
-
-  /* Responsive but controlled size */
   width: min(70vw, 420px);
   height: min(80vh, 600px);
-
   max-width: 90vw;
   max-height: 90vh;
-
   border-radius: 14px;
   overflow: hidden;
-
-  /* Visual separation from page */
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.05);
-
-  /* Subtle entrance */
   animation: clicksend-popin 0.18s ease-out;
 }
 
-/* ------------------------------
-   Pop-in animation
--------------------------------- */
 @keyframes clicksend-popin {
   from {
     opacity: 0;
@@ -76,15 +54,107 @@
   }
 }
 
-#clicksend-root ::-webkit-scrollbar {
-  width: 8px;
+/* Beautiful Scrollbar System */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-#clicksend-root ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-#clicksend-root ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.15);
+  border-radius: 20px;
+  border: 1.5px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.3);
+  background-clip: content-box;
+}
+
+/* Outlook-style Tag Tokens */
+.tag-token {
+  display: inline-block;
+  padding: 0 4px;
+  margin: 0 2px;
+  border-radius: 4px;
+  user-select: none;
+  transition: all 0.15s ease;
+  vertical-align: baseline;
+  border: 1px solid transparent;
+}
+
+.dark .tag-token {}
+
+.tag-token:hover {
+  filter: brightness(1.1);
+  transform: translateY(-0.5px);
+}
+
+/* Editor Container */
+.tokenized-editor {
+  min-height: 100px;
+  max-height: 300px;
+  overflow-y: auto;
+  outline: none;
+  padding: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.dark .tokenized-editor {
+  background: rgba(31, 41, 55, 0.3);
+  border-color: #374151;
+  color: #f3f4f6;
+}
+
+.tokenized-editor:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Pulse Animations */
+@keyframes pulse-soft {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Collapsible Section */
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+  opacity: 0;
+}
+
+.collapsible-content.open {
+  max-height: 1500px;
+  opacity: 1;
+}
+
+/* Scrollbar utility */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.2) transparent;
 }
