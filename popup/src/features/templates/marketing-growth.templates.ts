@@ -20,7 +20,7 @@ We're excited to announce our latest campaign, {{campaign_name}}!
 Stay tuned for more updates on how you can get involved and what this means for you.
 
 Cheers,
-The {{company_name}} Team`,
+The {{company}} Team`,
         },
     },
 
@@ -67,7 +67,7 @@ Shop now: {{shop_link}}`,
             category: "marketing_growth",
         },
         draft: {
-            subject: "Happy {{holiday_name}} from {{company_name}}! 🎁",
+            subject: "Happy {{holiday_name}} from {{company}}! 🎁",
             body: `Hi {{recipient_name}},
 
 Wishing you a joyful {{holiday_name}}! To celebrate, we've put together some special {{products/offers}} just for you.
@@ -75,7 +75,7 @@ Wishing you a joyful {{holiday_name}}! To celebrate, we've put together some spe
 Check out our seasonal collection: {{collection_link}}
 
 Warm regards,
-The {{company_name}} Team`,
+The {{company}} Team`,
         },
     },
 
@@ -86,10 +86,10 @@ The {{company_name}} Team`,
             category: "marketing_growth",
         },
         draft: {
-            subject: "{{company_name}} Weekly: This week's top stories",
+            subject: "{{company}} Weekly: This week's top stories",
             body: `Hi {{recipient_name}},
 
-Here is your weekly roundup of everything happening at {{company_name}}:
+Here is your weekly roundup of everything happening at {{company}}:
 
 1. {{news_item_1}}
 2. {{news_item_2}}
@@ -102,7 +102,7 @@ Read more on our blog: {{blog_link}}`,
     newsletter_monthly: {
         meta: {
             label: "Monthly Newsletter",
-            description: "A monthly summary of all things {{company_name}}",
+            description: "A monthly summary of all things {{company}}",
             category: "marketing_growth",
         },
         draft: {
@@ -129,7 +129,7 @@ Thanks for being part of our journey!`,
             subject: "A personal note from our founder",
             body: `Hi {{recipient_name}},
 
-I wanted to take a moment to personally thank you for being part of the {{company_name}} community. 
+I wanted to take a moment to personally thank you for being part of the {{company}} community. 
 
 Our mission has always been to {{mission_statement}}, and we couldn't do it without you.
 

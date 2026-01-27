@@ -17,17 +17,17 @@ export const jobCareerTemplates: Record<
             isPopular: true,
         },
         draft: {
-            subject: "Application for {{Role}} - {{Your Name}}",
-            body: `Hi {{Hiring Manager}},
+            subject: "Application for {{role}} - {{your_name}}",
+            body: `Hi {{recipient_name}},
 
-I am writing to express my interest in the {{Role}} position at {{Company}}.
+I am writing to express my interest in the {{role}} position at {{company}}.
 
-With experience in {{Your Skills}}, I believe I would be a strong fit for this role and could contribute meaningfully to your team.
+With experience in {{your_skills}}, I believe I would be a strong fit for this role and could contribute meaningfully to your team.
 
 I have attached my resume for your review and would welcome the opportunity to discuss this further.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -38,17 +38,17 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Exploring opportunities at {{Company}}",
-            body: `Hi {{Recipient Name}},
+            subject: "Exploring opportunities at {{company}}",
+            body: `Hi {{recipient_name}},
 
-I hope you are doing well. I am reaching out to explore potential opportunities at {{Company}}.
+I hope you are doing well. I am reaching out to explore potential opportunities at {{company}}.
 
-I work as a {{Role}} with experience in {{Your Skills}} and would be interested in contributing if there is a suitable opening now or in the future.
+I work as a {{role}} with experience in {{your_skills}} and would be interested in contributing if there is a suitable opening now or in the future.
 
 Happy to share my resume or connect for a brief conversation.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -59,17 +59,17 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Application for {{Role}} – Referred by {{Referrer Name}}",
-            body: `Hi {{Hiring Manager}},
+            subject: "Application for {{role}} – Referred by {{Referrer Name}}",
+            body: `Hi {{recipient_name}},
 
-I was referred by {{Referrer Name}} to apply for the {{Role}} position at {{Company}}.
+I was referred by {{Referrer Name}} to apply for the {{role}} position at {{company}}.
 
-Based on my background in {{Your Skills}}, I believe my experience aligns well with what your team is looking for.
+Based on my background in {{your_skills}}, I believe my experience aligns well with what your team is looking for.
 
 I have attached my resume for your consideration and would appreciate the opportunity to discuss further.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -80,17 +80,17 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Internship application – {{Role}}",
-            body: `Hi {{Hiring Manager}},
+            subject: "Internship application – {{role}}",
+            body: `Hi {{recipient_name}},
 
-I am writing to apply for the {{Role}} internship opportunity at {{Company}}.
+I am writing to apply for the {{role}} internship opportunity at {{company}}.
 
-I am currently {{Your Current Status}} and have been building skills in {{Your Skills}}, which I am eager to apply in a practical setting.
+I am currently {{Your Current Status}} and have been building skills in {{your_skills}}, which I am eager to apply in a practical setting.
 
 Please find my resume attached. I would appreciate the opportunity to learn and contribute to your team.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -102,16 +102,16 @@ Best regards,
         },
         draft: {
             subject: "Freelance support for {{Project / Role}}",
-            body: `Hi {{Recipient Name}},
+            body: `Hi {{recipient_name}},
 
-I am reaching out to explore freelance opportunities related to {{Project / Role}} at {{Company}}.
+I am reaching out to explore freelance opportunities related to {{Project / Role}} at {{company}}.
 
-I have experience working with {{Your Skills}} and have supported similar projects in the past.
+I have experience working with {{your_skills}} and have supported similar projects in the past.
 
 If this is of interest, I would be happy to discuss scope, timelines, and availability.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -122,17 +122,17 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Application for remote {{Role}}",
-            body: `Hi {{Hiring Manager}},
+            subject: "Application for remote {{role}}",
+            body: `Hi {{recipient_name}},
 
-I am writing to apply for the remote {{Role}} position at {{Company}}.
+I am writing to apply for the remote {{role}} position at {{company}}.
 
-I have experience working remotely and collaborating across teams, with a strong background in {{Your Skills}}.
+I have experience working remotely and collaborating across teams, with a strong background in {{your_skills}}.
 
 I have attached my resume and would welcome the opportunity to discuss how I could contribute.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -143,17 +143,17 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Following up on my application – {{Role}}",
-            body: `Hi {{Hiring Manager}},
+            subject: "Following up on my application – {{role}}",
+            body: `Hi {{recipient_name}},
 
-I recently applied for the {{Role}} position through your careers page and wanted to follow up.
+I recently applied for the {{role}} position through your careers page and wanted to follow up.
 
-I am very interested in the opportunity and believe my experience in {{Your Skills}} aligns well with the role.
+I am very interested in the opportunity and believe my experience in {{your_skills}} aligns well with the role.
 
 Thank you for your time and consideration.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -168,15 +168,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Interest in opportunities at {{Company}}",
-            body: `Hi {{Recruiter Name}},
+            subject: "Interest in opportunities at {{company}}",
+            body: `Hi {{recipient_name}},
 
-I hope you are doing well. I am reaching out to express my interest in potential opportunities at {{Company}}.
+I hope you are doing well. I am reaching out to express my interest in potential opportunities at {{company}}.
 
-I work as a {{Role}} with experience in {{Your Skills}} and would be glad to connect if there are relevant openings.
+I work as a {{role}} with experience in {{your_skills}} and would be glad to connect if there are relevant openings.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -187,15 +187,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Re: Opportunity at {{Company}}",
-            body: `Hi {{Recruiter Name}},
+            subject: "Re: Opportunity at {{company}}",
+            body: `Hi {{recipient_name}},
 
 Thank you for reaching out. I appreciate you considering my profile.
 
-I would be happy to share additional details or discuss how my experience in {{Your Skills}} could be a fit.
+I would be happy to share additional details or discuss how my experience in {{your_skills}} could be a fit.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -207,14 +207,14 @@ Best regards,
         },
         draft: {
             subject: "Inquiry about open positions",
-            body: `Hi {{Recruiter Name}},
+            body: `Hi {{recipient_name}},
 
-I wanted to check if there are any current or upcoming openings relevant to my background in {{Your Skills}}.
+I wanted to check if there are any current or upcoming openings relevant to my background in {{your_skills}}.
 
 Please let me know if it would be helpful to share my resume or schedule a conversation.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -226,14 +226,14 @@ Best regards,
         },
         draft: {
             subject: "Availability for discussion",
-            body: `Hi {{Recruiter Name}},
+            body: `Hi {{recipient_name}},
 
 Thank you for your message. I am available to connect on {{Available Dates / Times}}.
 
 Please let me know what works best for you.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -244,15 +244,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Compensation discussion – {{Role}}",
-            body: `Hi {{Recruiter Name}},
+            subject: "Compensation discussion – {{role}}",
+            body: `Hi {{recipient_name}},
 
 Thank you for raising the topic of compensation.
 
 Based on my experience and market research, I am looking for a range of {{Expected Salary Range}}. I am open to discussion.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -264,14 +264,14 @@ Best regards,
         },
         draft: {
             subject: "Location and work arrangement",
-            body: `Hi {{Recruiter Name}},
+            body: `Hi {{recipient_name}},
 
 Thank you for clarifying the location details for the role.
 
 I am comfortable with {{Remote / Hybrid / On-site}} arrangements and open to discussing this further if needed.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -286,15 +286,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Interview confirmation – {{Role}}",
-            body: `Hi {{Interviewer Name}},
+            subject: "Interview confirmation – {{role}}",
+            body: `Hi {{recipient_name}},
 
 Thank you for the interview invitation. I would like to confirm my availability for the interview scheduled on {{Date and Time}}.
 
 Looking forward to our conversation.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -305,15 +305,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Request to reschedule interview – {{Role}}",
-            body: `Hi {{Interviewer Name}},
+            subject: "Request to reschedule interview – {{role}}",
+            body: `Hi {{recipient_name}},
 
 Due to an unforeseen conflict, I wanted to ask if it would be possible to reschedule the interview.
 
 I am available on {{Alternative Dates / Times}} and apologize for any inconvenience caused.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -324,15 +324,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Thank you for the interview – {{Role}}",
-            body: `Hi {{Interviewer Name}},
+            subject: "Thank you for the interview – {{role}}",
+            body: `Hi {{recipient_name}},
 
-Thank you for taking the time to speak with me about the {{Role}} position.
+Thank you for taking the time to speak with me about the {{role}} position.
 
-I enjoyed learning more about the team and the work being done at {{Company}}. Our discussion further strengthened my interest in the role.
+I enjoyed learning more about the team and the work being done at {{company}}. Our discussion further strengthened my interest in the role.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -343,15 +343,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Following up on interview – {{Role}}",
-            body: `Hi {{Interviewer Name}},
+            subject: "Following up on interview – {{role}}",
+            body: `Hi {{recipient_name}},
 
-I wanted to follow up regarding the interview for the {{Role}} position.
+I wanted to follow up regarding the interview for the {{role}} position.
 
 Please let me know if there are any updates or additional information I can provide.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -363,14 +363,14 @@ Best regards,
         },
         draft: {
             subject: "Interview feedback request",
-            body: `Hi {{Interviewer Name}},
+            body: `Hi {{recipient_name}},
 
 Thank you again for the interview opportunity.
 
 If possible, I would appreciate any feedback you could share, as it would be very helpful for my professional growth.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -382,14 +382,14 @@ Best regards,
         },
         draft: {
             subject: "Following up on offer discussion",
-            body: `Hi {{Recruiter Name}},
+            body: `Hi {{recipient_name}},
 
-I wanted to follow up regarding the offer discussion for the {{Role}} position.
+I wanted to follow up regarding the offer discussion for the {{role}} position.
 
 Please let me know if there are any updates or next steps.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -400,15 +400,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Offer acceptance – {{Role}}",
-            body: `Hi {{Recruiter Name}},
+            subject: "Offer acceptance – {{role}}",
+            body: `Hi {{recipient_name}},
 
-Thank you for the offer for the {{Role}} position at {{Company}}.
+Thank you for the offer for the {{role}} position at {{company}}.
 
 I am happy to accept the offer and am excited to join the team. Please let me know the next steps.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -419,15 +419,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Regarding offer – {{Role}}",
-            body: `Hi {{Recruiter Name}},
+            subject: "Regarding offer – {{role}}",
+            body: `Hi {{recipient_name}},
 
-Thank you very much for the offer and for considering me for the {{Role}} position.
+Thank you very much for the offer and for considering me for the {{role}} position.
 
 After careful consideration, I have decided to pursue a different opportunity. I appreciate your time and support.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -443,14 +443,14 @@ Best regards,
         },
         draft: {
             subject: "Connecting regarding {{Field / Role}}",
-            body: `Hi {{Recipient Name}},
+            body: `Hi {{recipient_name}},
 
 I hope you are doing well. I came across your profile and wanted to connect.
 
-I work as a {{Role}} and would value the opportunity to learn from your experience in {{Field}}.
+I work as a {{role}} and would value the opportunity to learn from your experience in {{Field}}.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -462,14 +462,14 @@ Best regards,
         },
         draft: {
             subject: "Fellow alumni connection",
-            body: `Hi {{Recipient Name}},
+            body: `Hi {{recipient_name}},
 
 I noticed that we are both alumni of {{Institution}} and wanted to reach out.
 
 I would be glad to connect and exchange experiences if you are open to it.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -481,14 +481,14 @@ Best regards,
         },
         draft: {
             subject: "Introduction via {{Mutual Contact}}",
-            body: `Hi {{Recipient Name}},
+            body: `Hi {{recipient_name}},
 
 {{Mutual Contact}} suggested that I reach out to you.
 
 I would appreciate the opportunity to connect and learn more about your work in {{Field}}.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -499,15 +499,15 @@ Best regards,
             category: "job_career",
         },
         draft: {
-            subject: "Referral request – {{Role}}",
-            body: `Hi {{Recipient Name}},
+            subject: "Referral request – {{role}}",
+            body: `Hi {{recipient_name}},
 
-I hope you are doing well. I am currently exploring opportunities for the {{Role}} position at {{Company}}.
+I hope you are doing well. I am currently exploring opportunities for the {{role}} position at {{company}}.
 
 If you are comfortable, I would appreciate a referral or any guidance you could share.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -519,14 +519,14 @@ Best regards,
         },
         draft: {
             subject: "Thank you for the referral",
-            body: `Hi {{Recipient Name}},
+            body: `Hi {{recipient_name}},
 
 Thank you very much for taking the time to refer me.
 
 I truly appreciate your support and will keep you updated.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 
@@ -538,14 +538,14 @@ Best regards,
         },
         draft: {
             subject: "Great connecting at {{Event Name}}",
-            body: `Hi {{Recipient Name}},
+            body: `Hi {{recipient_name}},
 
 It was great meeting you at {{Event Name}}. I enjoyed our conversation about {{Topic}}.
 
 I would be glad to stay in touch and continue the discussion.
 
 Best regards,
-{{Your Name}}`,
+{{your_name}}`,
         },
     },
 };

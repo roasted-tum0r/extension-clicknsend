@@ -31,6 +31,10 @@ const TagInputs = forwardRef<TagInputsHandle, TagInputsProps>(({ tags, values, o
 
     const handleFocus = (tag: string) => {
         setFocusedTag(tag);
+        // If it's already committed, ensure the filled section is open
+        if (committedTags.has(tag)) {
+            setIsFilledOpen(true);
+        }
     };
 
     const handleBlur = (tag: string) => {
@@ -40,8 +44,9 @@ const TagInputs = forwardRef<TagInputsHandle, TagInputsProps>(({ tags, values, o
         }
     };
 
-    const unfilledTags = tags.filter(t => !committedTags.has(t) || t === focusedTag);
-    const filledTags = tags.filter(t => committedTags.has(t) && t !== focusedTag);
+    // Use only committedTags for the split, ignore focusedTag to prevent jumping
+    const unfilledTags = tags.filter(t => !committedTags.has(t));
+    const filledTags = tags.filter(t => committedTags.has(t));
 
     useImperativeHandle(ref, () => ({
         focusTag: (tag: string) => {

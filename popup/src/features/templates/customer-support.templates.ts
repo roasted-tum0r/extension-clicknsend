@@ -18,15 +18,15 @@ export const customerSupportTemplates: Record<
         },
         draft: {
             subject: "We’ve received your support request – {{ticket_id}}",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
-Thank you for reaching out to {{company_name}}. We’ve received your support request and created ticket {{ticket_id}}.
+Thank you for reaching out to {{company}}. We’ve received your support request and created ticket {{ticket_id}}.
 
 Our team will review your request and get back to you as soon as possible.
 
 Best regards,
 {{support_agent_name}}
-{{company_name}} Support`,
+{{company}} Support`,
         },
     },
 
@@ -38,7 +38,7 @@ Best regards,
         },
         draft: {
             subject: "Update on your support request – {{ticket_id}}",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 We are currently investigating the issue you reported under ticket {{ticket_id}}.
 
@@ -46,7 +46,7 @@ We’ll update you once we have more information. Thank you for your patience.
 
 Regards,
 {{support_agent_name}}
-{{company_name}} Support`,
+{{company}} Support`,
         },
     },
 
@@ -58,7 +58,7 @@ Regards,
         },
         draft: {
             subject: "Additional information needed for ticket {{ticket_id}}",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 To proceed with your request, we need a bit more information:
 
@@ -68,7 +68,7 @@ Once we have these details, we’ll continue working on your issue.
 
 Thank you,
 {{support_agent_name}}
-{{company_name}} Support`,
+{{company}} Support`,
         },
     },
 
@@ -80,7 +80,7 @@ Thank you,
         },
         draft: {
             subject: "Your issue has been resolved – {{ticket_id}}",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 We’re happy to inform you that your issue under ticket {{ticket_id}} has been resolved.
 
@@ -88,7 +88,7 @@ If you experience any further issues, feel free to reply to this email.
 
 Best regards,
 {{support_agent_name}}
-{{company_name}} Support`,
+{{company}} Support`,
         },
     },
 
@@ -100,7 +100,7 @@ Best regards,
         },
         draft: {
             subject: "Your support request has been escalated – {{ticket_id}}",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 Your request has been escalated to our senior support team to ensure it’s handled appropriately.
 
@@ -108,7 +108,7 @@ We appreciate your patience and will keep you updated.
 
 Regards,
 {{support_agent_name}}
-{{company_name}} Support`,
+{{company}} Support`,
         },
     },
 
@@ -120,7 +120,7 @@ Regards,
         },
         draft: {
             subject: "Our apologies regarding your experience",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 We sincerely apologize for the inconvenience you experienced.
 
@@ -128,7 +128,7 @@ Your feedback is important to us, and we’re taking steps to ensure this doesn�
 
 Thank you for your understanding,
 {{support_agent_name}}
-{{company_name}} Support`,
+{{company}} Support`,
         },
     },
 
@@ -143,15 +143,15 @@ Thank you for your understanding,
             category: "customer_support",
         },
         draft: {
-            subject: "Payment issue with your {{company_name}} account",
-            body: `Hello {{customer_name}},
+            subject: "Payment issue with your {{company}} account",
+            body: `Hello {{recipient_name}},
 
 We were unable to process your recent payment for {{service_name}}.
 
 Please update your payment details to avoid service interruption.
 
 Thank you,
-{{company_name}} Billing Team`,
+{{company}} Billing Team`,
         },
     },
 
@@ -162,15 +162,15 @@ Thank you,
             category: "customer_support",
         },
         draft: {
-            subject: "Your invoice from {{company_name}} – {{invoice_number}}",
-            body: `Hello {{customer_name}},
+            subject: "Your invoice from {{company}} – {{invoice_number}}",
+            body: `Hello {{recipient_name}},
 
 Attached is your invoice {{invoice_number}} for {{billing_period}}.
 
 Please let us know if you have any questions.
 
 Regards,
-{{company_name}} Billing Team`,
+{{company}} Billing Team`,
         },
     },
 
@@ -182,14 +182,14 @@ Regards,
         },
         draft: {
             subject: "Refund initiated for {{transaction_id}}",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 We’ve initiated a refund for transaction {{transaction_id}}.
 
 The amount should reflect in your account within {{refund_timeline}}.
 
 Best regards,
-{{company_name}} Billing Team`,
+{{company}} Billing Team`,
         },
     },
 
@@ -201,14 +201,14 @@ Best regards,
         },
         draft: {
             subject: "Refund completed – {{transaction_id}}",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 Your refund for transaction {{transaction_id}} has been successfully completed.
 
 Please contact us if you have any questions.
 
 Thank you,
-{{company_name}} Billing Team`,
+{{company}} Billing Team`,
         },
     },
 
@@ -220,14 +220,14 @@ Thank you,
         },
         draft: {
             subject: "Your subscription has been cancelled",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 This email confirms that your subscription has been cancelled effective {{cancellation_date}}.
 
-We appreciate your time with {{company_name}}.
+We appreciate your time with {{company}}.
 
 Regards,
-{{company_name}} Billing Team`,
+{{company}} Billing Team`,
         },
     },
 
@@ -239,14 +239,14 @@ Regards,
         },
         draft: {
             subject: "Subscription renewed successfully",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 Your subscription has been successfully renewed and is valid until {{renewal_date}}.
 
-Thank you for continuing with {{company_name}}.
+Thank you for continuing with {{company}}.
 
 Best regards,
-{{company_name}} Billing Team`,
+{{company}} Billing Team`,
         },
     },
 
@@ -262,14 +262,14 @@ Best regards,
         },
         draft: {
             subject: "Service outage notification",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 We’re currently experiencing a service outage affecting {{affected_service}}.
 
 Our team is actively working to resolve the issue.
 
 Thank you for your patience,
-{{company_name}} Team`,
+{{company}} Team`,
         },
     },
 
@@ -281,14 +281,14 @@ Thank you for your patience,
         },
         draft: {
             subject: "Partial service disruption notice",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 Some users may be experiencing limited access to {{affected_service}}.
 
 We’re working to restore full functionality as soon as possible.
 
 Regards,
-{{company_name}} Team`,
+{{company}} Team`,
         },
     },
 
@@ -300,14 +300,14 @@ Regards,
         },
         draft: {
             subject: "Service restored",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 The earlier service issue has been fully resolved.
 
 Thank you for your patience during this time.
 
 Best regards,
-{{company_name}} Team`,
+{{company}} Team`,
         },
     },
 
@@ -319,14 +319,14 @@ Best regards,
         },
         draft: {
             subject: "Scheduled maintenance notification",
-            body: `Hello {{customer_name}},
+            body: `Hello {{recipient_name}},
 
 We’ll be performing scheduled maintenance on {{maintenance_date}} between {{start_time}} and {{end_time}}.
 
 During this period, some services may be unavailable.
 
 Thank you,
-{{company_name}} Team`,
+{{company}} Team`,
         },
     },
 };

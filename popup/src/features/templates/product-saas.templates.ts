@@ -16,8 +16,8 @@ export const productSaasTemplates: Record<
             category: "product_saas",
         },
         draft: {
-            subject: "Welcome to {{company_name}}! 🚀",
-            body: `Hi {{user_name}},
+            subject: "Welcome to {{company}}! 🚀",
+            body: `Hi {{recipient_name}},
 
 We're thrilled to have you here! Your account is all set up.
 
@@ -26,7 +26,7 @@ To get started, you can {{first_action_link}}. We've also put together a quick g
 If you have any questions, just reply to this email.
 
 Best,
-The {{company_name}} Team`,
+The {{company}} Team`,
         },
     },
 
@@ -38,9 +38,9 @@ The {{company_name}} Team`,
         },
         draft: {
             subject: "Quick tip: Finishing your account setup",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
-You're almost there! To get the most out of {{company_name}}, we recommend completing these steps:
+You're almost there! To get the most out of {{company}}, we recommend completing these steps:
 
 1. {{step_one}}
 2. {{step_two}}
@@ -58,8 +58,8 @@ Happy exploring!`,
             category: "product_saas",
         },
         draft: {
-            subject: "Verify your email for {{company_name}}",
-            body: `Hi {{user_name}},
+            subject: "Verify your email for {{company}}",
+            body: `Hi {{recipient_name}},
 
 Please verify your email address to secure your account and access all our features.
 
@@ -77,7 +77,7 @@ If you didn't create this account, you can safely ignore this email.`,
         },
         draft: {
             subject: "You've officially joined the club!",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
 Great to see you logged in! We noticed you've started exploring {{feature_name}}.
 
@@ -96,7 +96,7 @@ Cheers,
         },
         draft: {
             subject: "How {{feature_name}} works",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
 Ready to dive deeper? Today we're highlighting {{feature_name}}.
 
@@ -113,10 +113,10 @@ Let us know what you think!`,
             category: "product_saas",
         },
         draft: {
-            subject: "Your {{company_name}} trial ends in {{days_left}} days",
-            body: `Hi {{user_name}},
+            subject: "Your {{company}} trial ends in {{days_left}} days",
+            body: `Hi {{recipient_name}},
 
-Your free trial of {{company_name}} is wrapping up. We hope you've enjoyed using it for {{user_activity}}.
+Your free trial of {{company}} is wrapping up. We hope you've enjoyed using it for {{user_activity}}.
 
 To keep your access and data, upgrade to a paid plan before {{expiry_date}}.
 
@@ -136,7 +136,7 @@ Upgrade now: {{pricing_link}}`,
         },
         draft: {
             subject: "Introducing {{feature_name}}: A better way to {{benefit}}",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
 We've been working hard on something special. Say hello to {{feature_name}}!
 
@@ -154,7 +154,7 @@ Try it out today: {{app_link}}`,
         },
         draft: {
             subject: "Better, faster, stronger: Updates to {{feature_name}}",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
 We've listened to your feedback and made some great improvements to {{feature_name}}.
 
@@ -190,7 +190,7 @@ Thanks for your patience and for reporting it!`,
         },
         draft: {
             subject: "Release Notes: What's new in {{month_year}}",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
 Here's everything we shipped this month:
 
@@ -210,7 +210,7 @@ Read the full details on our blog: {{blog_link}}`,
         },
         draft: {
             subject: "Notice: {{feature_name}} will be sunset on {{date}}",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
 We're reaching out to let you know that we will be sunsetting {{feature_name}} on {{date}}.
 
@@ -232,9 +232,9 @@ Please let us know if you need help migrating your data.`,
         },
         draft: {
             subject: "Missing out on {{benefit}}?",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
-It's been a while since we saw you! Since your last visit, {{company_name}} has helped users {{stat_success}}.
+It's been a while since we saw you! Since your last visit, {{company}} has helped users {{stat_success}}.
 
 Ready to jump back in? {{login_link}}`,
         },
@@ -248,7 +248,7 @@ Ready to jump back in? {{login_link}}`,
         },
         draft: {
             subject: "We want you back! (Special offer inside)",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
 We've missed you. To welcome you back, we're offering {{discount_percent}}% off your next {{duration}}.
 
@@ -264,9 +264,9 @@ Claim your offer: {{claim_link}}`,
         },
         draft: {
             subject: "Is everything okay? Your account is inactive",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
-We noticed you haven't used {{company_name}} in over {{number}} months. Is there anything we can do to help?
+We noticed you haven't used {{company}} in over {{number}} months. Is there anything we can do to help?
 
 If we don't hear from you, we'll assume you're moving on.`,
         },
@@ -280,7 +280,7 @@ If we don't hear from you, we'll assume you're moving on.`,
         },
         draft: {
             subject: "Unlock more with {{plan_name}}",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
 You're doing great with our {{current_plan}} plan! Did you know {{plan_name}} includes {{benefit}}?
 
@@ -296,7 +296,7 @@ See the difference: {{comparison_link}}`,
         },
         draft: {
             subject: "Your plan has been updated to {{plan_name}}",
-            body: `Hi {{user_name}},
+            body: `Hi {{recipient_name}},
 
 This email confirms that your subscription has been moved to the {{plan_name}} tier.
 

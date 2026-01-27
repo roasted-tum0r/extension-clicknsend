@@ -71,10 +71,10 @@ The Finance Team`,
             category: "finance_operations",
         },
         draft: {
-            subject: "Inquiry regarding {{product/service}} - {{company_name}}",
-            body: `Hi {{vendor_contact_name}},
+            subject: "Inquiry regarding {{product/service}} - {{company}}",
+            body: `Hi {{recipient_name}},
 
-I'm reaching out from {{company_name}} to inquire about your {{product/service}} offerings. 
+I'm reaching out from {{company}} to inquire about your {{product/service}} offerings. 
 
 We're interested in {{specific_details}} and would appreciate any pricing or catalog information you can share.
 
@@ -93,7 +93,7 @@ Best,
         },
         draft: {
             subject: "RFQ: {{item_description}} - {{quantity}} units",
-            body: `Dear {{vendor_contact_name}},
+            body: `Dear {{recipient_name}},
 
 Please provide a formal quotation for the following items:
 
@@ -115,7 +115,7 @@ Regards,
         },
         draft: {
             subject: "Purchase Order Confirmation: PO #{{po_number}}",
-            body: `Hi {{vendor_contact_name}},
+            body: `Hi {{recipient_name}},
 
 This email confirms our purchase of the items listed in PO #{{po_number}}. 
 
@@ -174,7 +174,7 @@ Operations Team`,
         },
         draft: {
             subject: "Follow-up: Update on {{request_title}} / Delivery #{{ref_no}}",
-            body: `Hi {{vendor_contact_name}},
+            body: `Hi {{recipient_name}},
 
 I'm following up on the status of {{request_title}}. We're expecting {{item/delivery}} by {{expected_date}}.
 

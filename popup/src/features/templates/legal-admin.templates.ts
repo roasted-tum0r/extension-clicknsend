@@ -62,7 +62,7 @@ Best regards,
             category: "legal_admin",
         },
         draft: {
-            subject: "Non-Disclosure Agreement: {{company_name}}",
+            subject: "Non-Disclosure Agreement: {{company}}",
             body: `Hi {{recipient_name}},
 
 As discussed, please find attached the Non-Disclosure Agreement (NDA) for our upcoming collaboration.
@@ -81,7 +81,7 @@ Best regards,
             category: "legal_admin",
         },
         draft: {
-            subject: "Follow-up: Pending NDA for {{company_name}}",
+            subject: "Follow-up: Pending NDA for {{company}}",
             body: `Hi {{recipient_name}},
 
 I'm following up on the NDA sent on {{date}}. 
@@ -226,7 +226,7 @@ Thanks!`,
             category: "legal_admin",
         },
         draft: {
-            subject: "Contract for {{project/service}}: {{company_name}}",
+            subject: "Contract for {{project/service}}: {{company}}",
             body: `Hi {{recipient_name}},
 
 Please find the formal agreement for {{project/service}} attached.

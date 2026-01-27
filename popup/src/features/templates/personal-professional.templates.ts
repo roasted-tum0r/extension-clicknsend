@@ -21,7 +21,7 @@ export const personalProfessionalTemplates: Record<
 
 I'm reaching out to introduce myself. I've been following your work on {{field/topic}} and wanted to connect.
 
-I'm a {{your_role}} and would love to learn more about your experience with {{specific_area}}.
+I'm a {{role}} and would love to learn more about your experience with {{specific_area}}.
 
 Looking forward to connecting!
 
@@ -40,7 +40,7 @@ Best,
             subject: "Professional Introduction - {{your_name}}",
             body: `Dear {{recipient_name}},
 
-I am writing to formally introduce myself. I currently work as a {{your_role}} at {{your_company}} and have been involved in {{project/area}}.
+I am writing to formally introduce myself. I currently work as a {{role}} at {{company}} and have been involved in {{project/area}}.
 
 I believe there may be alignment between our work, and I would value the opportunity to exchange professional insights.
 
@@ -82,7 +82,7 @@ Best,
             subject: "Hi! Introducing myself to the team",
             body: `Hi Team,
 
-I'm excited to join you all as a {{your_role}}! 
+I'm excited to join you all as a {{role}}! 
 
 I've previously worked on {{previous_experience}} and am looking forward to contributing to {{current_project}}.
 

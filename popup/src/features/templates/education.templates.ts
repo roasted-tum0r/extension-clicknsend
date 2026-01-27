@@ -15,7 +15,7 @@ export const educationTemplates: Record<
             subject: "Inquiry regarding admission to {{program_name}}",
             body: `Dear Admissions Team,
 
-I'm writing to express my interest in the {{program_name}} at {{institution_name}}. 
+I'm writing to express my interest in the {{program_name}} at {{company}}. 
 
 Could you please provide information regarding the admission requirements and deadlines?
 
@@ -51,7 +51,7 @@ Best,
         },
         draft: {
             subject: "Assignment Submission: {{assignment_title}} - {{your_name}}",
-            body: `Dear {{instructor_name}},
+            body: `Dear {{recipient_name}},
 
 Please find attached my submission for the {{assignment_title}}.
 
@@ -70,7 +70,7 @@ Regards,
         },
         draft: {
             subject: "Request for extension: {{assignment_title}}",
-            body: `Dear {{instructor_name}},
+            body: `Dear {{recipient_name}},
 
 I am writing to request a brief extension for the {{assignment_title}} due on {{due_date}}.
 
