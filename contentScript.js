@@ -51,9 +51,17 @@ function injectReactPopup(email) {
   if (x + 400 > window.innerWidth) x = window.innerWidth - 400 - OFFSET;
   if (y + 600 > window.innerHeight) y = window.innerHeight - 600 - OFFSET;
 
+  const INITIAL_WIDTH = 420;
+  const INITIAL_HEIGHT = 600;
+
+  host.style.width = `${INITIAL_WIDTH}px`;
+  host.style.height = `${INITIAL_HEIGHT}px`;
   host.style.top = `${y}px`;
   host.style.left = `${x}px`;
   host.style.zIndex = "2147483647"; // Max z-index
+  host.style.overflow = "hidden"; // Clip content during resize
+  host.style.borderRadius = "14px";
+  host.style.boxShadow = "none"; // Shadow is on the rootDiv
 
   document.body.appendChild(host);
 
@@ -61,9 +69,43 @@ function injectReactPopup(email) {
   const style = document.createElement("style");
   style.textContent = `
     * { box-sizing: border-box; }
-    :host { all: initial; font-family: inherit; display: block; }
+    :host { 
+      all: initial; 
+      display: block; 
+      font-family: 'Inter', system-ui, -apple-system, sans-serif !important; 
+    }
+    #clicksend-root {
+      font-family: inherit;
+      color-scheme: dark !important;
+      isolation: isolate;
+    }
+    .clicksend-resizer {
+      width: 16px;
+      height: 16px;
+      background: transparent;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      cursor: nwse-resize;
+      z-index: 2147483647;
+    }
+    .clicksend-resizer::after {
+      content: "";
+      position: absolute;
+      right: 3px;
+      bottom: 3px;
+      width: 5px;
+      height: 5px;
+      border-right: 2px solid rgba(156, 163, 175, 0.4);
+      border-bottom: 2px solid rgba(156, 163, 175, 0.4);
+    }
   `;
   shadow.appendChild(style);
+
+  // Add Resizer
+  const resizer = document.createElement("div");
+  resizer.className = "clicksend-resizer";
+  shadow.appendChild(resizer);
 
   // Load CSS into shadow root
   const cssUrl = chrome.runtime.getURL("dist/popup/index.css");
@@ -96,6 +138,59 @@ function injectReactPopup(email) {
 
   setupOutsideClickClose(host, rootDiv);
   setupDraggable(host, shadow);
+  setupResizable(host, shadow);
+}
+
+function setupResizable(host, shadow) {
+  const resizer = shadow.querySelector(".clicksend-resizer");
+  let isResizing = false;
+  let startX, startY, startWidth, startHeight;
+
+  resizer.addEventListener("mousedown", (e) => {
+    isResizing = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    const rect = host.getBoundingClientRect();
+    startWidth = rect.width;
+    startHeight = rect.height;
+
+    document.body.style.userSelect = "none";
+    document.body.style.cursor = "nwse-resize";
+    e.preventDefault();
+    e.stopPropagation();
+
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isResizing) return;
+      const dw = e.clientX - startX;
+      const dh = e.clientY - startY;
+
+      // Min dimensions
+      const newWidth = Math.max(300, startWidth + dw);
+      const newHeight = Math.max(400, startHeight + dh);
+
+      host.style.width = `${newWidth}px`;
+      host.style.height = `${newHeight}px`;
+
+      // Update the internal root div as well if it has fixed min/max
+      const rootDiv = shadow.getElementById("clicksend-root");
+      if (rootDiv) {
+        rootDiv.style.width = "100%";
+        rootDiv.style.height = "100%";
+        rootDiv.style.maxWidth = "none";
+        rootDiv.style.maxHeight = "none";
+      }
+    }, { signal });
+
+    window.addEventListener("mouseup", () => {
+      isResizing = false;
+      document.body.style.userSelect = "";
+      document.body.style.cursor = "";
+      controller.abort();
+    }, { signal });
+  });
 }
 
 function setupDraggable(host, shadow) {

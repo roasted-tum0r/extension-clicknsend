@@ -36,7 +36,7 @@ export function replaceTags(text: string, values: Record<string, string>): strin
  * Checks if a string contains any unfilled {{tag}} placeholders.
  */
 export function hasUnfilledTags(text: string): boolean {
-    return TAG_REGEX.test(text);
+    return /\{\{([^}]+)\}\}/.test(text); // Use a new non-global regex to avoid lastIndex issues
 }
 
 export type Token = { type: 'text'; value: string } | { type: 'tag'; name: string };

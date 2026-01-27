@@ -88,6 +88,7 @@ export default function TokenizedBlockEditor({
 
         const parts = textWithBreaks.split(tokenRegex);
         return parts.map(part => {
+            console.log(part, "shreyosi got");
             if (part.startsWith('{{') && part.endsWith('}}')) {
                 const tagName = part.slice(2, -2).trim();
                 const tagValue = tagValues[tagName];
@@ -99,20 +100,22 @@ export default function TokenizedBlockEditor({
                     : "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-700/50 animate-pulse-soft";
 
                 // We store the original {{tag}} in a data attribute so we can reconstruct the string accurately
-                return `<span class="tag-token ${pillClass}" data-raw-tag="${part}" data-tag-name="${tagName}" contenteditable="false"><span class="opacity-40 text-[9px] mr-1">{{</span>${escapeHTML(displayValue)}<span class="opacity-40 text-[9px] ml-1">}}</span></span>`;
+                return `<span class="tag-token ${pillClass}" data-raw-tag="${part}" data-tag-name="${tagName}" contenteditable="false">${escapeHTML(displayValue)}</span>`;
             }
             // Need to preserve <br> elements if they were part of the split text part
+            console.log(part, "this part part");
             return part; // part already contains <br> from our initial split/join
+
         }).join("");
     }, [tagValues]);
 
     // Value sync with Caret Preservation
     useEffect(() => {
         if (editorRef.current && !isFocused) {
-            const currentTemplate = reconstructTemplate();
             const targetHTML = parseToHTML(value);
-
-            if (currentTemplate !== value) {
+            // Instead of comparing raw strings, we compare the generated HTML 
+            // to ensure tagValue updates trigger a re-render even if 'value' (the template) is unchanged.
+            if (editorRef.current.innerHTML !== targetHTML) {
                 editorRef.current.innerHTML = targetHTML;
             }
         }

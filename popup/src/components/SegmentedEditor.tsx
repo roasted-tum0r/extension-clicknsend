@@ -106,9 +106,9 @@ export default function SegmentedEditor({
                                                 }
                                             `}
                                         >
-                                            <span className="opacity-60 text-[8px]">{"{{"}</span>
+                                            {/* <span className="opacity-60 text-[8px]">{"{{"}</span> */}
                                             {isFilled ? tagValue : tagName}
-                                            <span className="opacity-60 text-[8px]">{"}}"}</span>
+                                            {/* <span className="opacity-60 text-[8px]">{"}}"}</span> */}
                                         </button>
                                     );
                                 })()}

@@ -94,7 +94,6 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
   useEffect(() => {
     const allText = subject + "\n" + message;
     const tags = extractTags(allText);
-
     // Only update if the tag list has actually changed to avoid unnecessary re-renders
     setDetectedTags(prev => {
       const isSame = prev.length === tags.length && prev.every(t => tags.includes(t));

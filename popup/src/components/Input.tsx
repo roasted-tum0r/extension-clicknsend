@@ -11,6 +11,8 @@ interface Props {
   showHighlighter?: boolean;
   inputRef?: (el: HTMLInputElement | null) => void;
   onTagClick?: (tag: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 export function Input({
@@ -22,7 +24,9 @@ export function Input({
   className = "",
   showHighlighter = false,
   inputRef,
-  onTagClick
+  onTagClick,
+  onFocus,
+  onBlur
 }: Props) {
   const internalRef = useRef<HTMLInputElement>(null);
 
@@ -51,6 +55,8 @@ export function Input({
           value={value}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
+          onFocus={onFocus}
+          onBlur={onBlur}
           className={`
                         w-full p-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md
                         text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none
