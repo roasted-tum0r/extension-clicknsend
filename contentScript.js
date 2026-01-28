@@ -80,15 +80,15 @@ function injectReactPopup(email) {
       isolation: isolate;
     }
     .clicksend-resizer {
-      width: 16px;
-      height: 16px;
-      background: transparent;
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      cursor: nwse-resize;
-      z-index: 2147483647;
-    }
+  width: 20px; /* Increased size for easier grab */
+  height: 20px;
+  background: transparent; /* Change to 'red' to test hit area */
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: nwse-resize;
+  z-index: 2147483647;
+}
     .clicksend-resizer::after {
       content: "";
       position: absolute;
@@ -101,14 +101,14 @@ function injectReactPopup(email) {
     }
   `;
   shadow.appendChild(style);
-
   // Add Resizer
   const resizer = document.createElement("div");
   resizer.className = "clicksend-resizer";
   shadow.appendChild(resizer);
 
+
   // Load CSS into shadow root
-  const cssUrl = chrome.runtime.getURL("dist/popup/index.css");
+  const cssUrl = chrome.runtime.getURL("dist/popup/index.12345678.css");
   const link = document.createElement("link");
   link.id = "clicksend-css";
   link.rel = "stylesheet";
@@ -126,7 +126,7 @@ function injectReactPopup(email) {
   if (!document.getElementById("clicksend-js")) {
     const script = document.createElement("script");
     script.id = "clicksend-js";
-    script.src = chrome.runtime.getURL("dist/popup/index.js");
+    script.src = chrome.runtime.getURL("dist/popup/index.12345678.js");
     script.type = "module";
     script.onload = () => {
       console.log("React bundle loaded fresh");
@@ -143,53 +143,48 @@ function injectReactPopup(email) {
 
 function setupResizable(host, shadow) {
   const resizer = shadow.querySelector(".clicksend-resizer");
-  let isResizing = false;
-  let startX, startY, startWidth, startHeight;
+  if (!resizer) return;
 
   resizer.addEventListener("mousedown", (e) => {
-    isResizing = true;
-    startX = e.clientX;
-    startY = e.clientY;
-    const rect = host.getBoundingClientRect();
-    startWidth = rect.width;
-    startHeight = rect.height;
+    // 1. Stop the event from bubbling up to the Draggable listener
+    e.stopPropagation();
+    e.preventDefault();
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startWidth = parseInt(document.defaultView.getComputedStyle(host).width, 10);
+    const startHeight = parseInt(document.defaultView.getComputedStyle(host).height, 10);
 
     document.body.style.userSelect = "none";
     document.body.style.cursor = "nwse-resize";
-    e.preventDefault();
-    e.stopPropagation();
 
-    const controller = new AbortController();
-    const { signal } = controller;
+    const onMouseMove = (moveEvent) => {
+      const dw = moveEvent.clientX - startX;
+      const dh = moveEvent.clientY - startY;
 
-    window.addEventListener("mousemove", (e) => {
-      if (!isResizing) return;
-      const dw = e.clientX - startX;
-      const dh = e.clientY - startY;
-
-      // Min dimensions
       const newWidth = Math.max(300, startWidth + dw);
       const newHeight = Math.max(400, startHeight + dh);
 
       host.style.width = `${newWidth}px`;
       host.style.height = `${newHeight}px`;
 
-      // Update the internal root div as well if it has fixed min/max
+      // Ensure the internal root fills the new host size
       const rootDiv = shadow.getElementById("clicksend-root");
       if (rootDiv) {
-        rootDiv.style.width = "100%";
-        rootDiv.style.height = "100%";
-        rootDiv.style.maxWidth = "none";
-        rootDiv.style.maxHeight = "none";
+        rootDiv.style.width = '100%';
+        rootDiv.style.height = '100%';
       }
-    }, { signal });
+    };
 
-    window.addEventListener("mouseup", () => {
-      isResizing = false;
+    const onMouseUp = () => {
       document.body.style.userSelect = "";
       document.body.style.cursor = "";
-      controller.abort();
-    }, { signal });
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
   });
 }
 

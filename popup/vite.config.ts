@@ -14,11 +14,11 @@ export default defineConfig(({ command }) => {
           rollupOptions: {
             input: resolve(__dirname, "index.html"),
             output: {
-              entryFileNames: "index.js",
+              entryFileNames: "index.12345678.js",
               chunkFileNames: "chunks/[name].js",
               assetFileNames: (assetInfo) => {
                 if (assetInfo.names.map((name) => name.endsWith(".css"))) {
-                  return "index.css";
+                  return "index.12345678.css";
                 }
                 return "assets/[name][extname]";
               }
