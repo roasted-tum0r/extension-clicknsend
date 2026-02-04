@@ -39,8 +39,8 @@ function App({ initialEmail }: { initialEmail?: string }) {
       }}
     >
       {/* Actual Background Container */}
-      <div className="w-full h-full flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-        <div className="border-b border-gray-200 dark:border-gray-800 p-6 pb-4 shrink-0 transition-colors">
+      <div className="w-full h-full flex flex-col bg-gradient-to-br from-slate-300 via-slate-100 to-slate-300 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 text-gray-900 dark:text-white">
+        <div className="relative z-50 border-b border-gray-200 dark:border-gray-800 p-6 pb-4 shrink-0 transition-colors">
           <Header theme={theme} toggleTheme={toggleTheme} zoom={zoom} onZoomChange={setZoom} />
         </div>
         <div className="flex-1 overflow-y-auto px-6 pb-6 scrollbar-thin">
