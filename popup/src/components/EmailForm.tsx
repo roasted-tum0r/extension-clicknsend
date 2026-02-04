@@ -25,6 +25,7 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
   const [message, setMessage] = useState("");
   const [detectedTags, setDetectedTags] = useState<string[]>([]);
   const [tagValues, setTagValues] = useState<Record<string, string>>({});
+  const [isTemplateSelectOpen, setIsTemplateSelectOpen] = useState(false);
 
   const tagInputsRef = useRef<TagInputsHandle>(null);
 
@@ -161,13 +162,19 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
         placeholder={loading ? "Loading email..." : "Type the email here! Example: [EMAIL_ADDRESS]"}
         type="email"
       />
-      <NestedTemplateSelect value={template} onChange={handleTemplateChange} />
+      <NestedTemplateSelect
+        value={template}
+        onChange={handleTemplateChange}
+        isOpen={isTemplateSelectOpen}
+        onOpenChange={setIsTemplateSelectOpen}
+      />
 
       <TagInputs
         ref={tagInputsRef}
         tags={detectedTags}
         values={tagValues}
         onChange={handleTagChange}
+        hideFilled={isTemplateSelectOpen}
       />
 
       <TokenizedBlockEditor

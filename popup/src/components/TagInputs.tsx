@@ -5,13 +5,14 @@ interface TagInputsProps {
     tags: string[];
     values: Record<string, string>;
     onChange: (tag: string, value: string) => void;
+    hideFilled?: boolean;
 }
 
 export interface TagInputsHandle {
     focusTag: (tag: string) => void;
 }
 
-const TagInputs = forwardRef<TagInputsHandle, TagInputsProps>(({ tags, values, onChange }, ref) => {
+const TagInputs = forwardRef<TagInputsHandle, TagInputsProps>(({ tags, values, onChange, hideFilled }, ref) => {
     const [isFilledOpen, setIsFilledOpen] = useState(false);
     const [committedTags, setCommittedTags] = useState<Set<string>>(new Set());
     const [focusedTag, setFocusedTag] = useState<string | null>(null);
@@ -83,16 +84,17 @@ const TagInputs = forwardRef<TagInputsHandle, TagInputsProps>(({ tags, values, o
                     </div>
                     <div className="p-4 space-y-4">
                         {unfilledTags.map((tag) => {
+                            const tagName = tag.toLowerCase().replace(/_/g, " ");
                             const isFilled = !!values[tag];
                             return (
                                 <div key={tag} className="relative">
                                     <Input
-                                        label={tag.replace(/_/g, " ")}
+                                        label={tagName}
                                         value={values[tag] || ""}
                                         onChange={(val) => onChange(tag, val)}
                                         onFocus={() => handleFocus(tag)}
                                         onBlur={() => handleBlur(tag)}
-                                        placeholder={`Enter ${tag.toLowerCase()}...`}
+                                        placeholder={`Enter ${tagName.includes("your") ? tagName : "your " + tagName}...`}
                                         inputRef={(el) => (inputRefs.current[tag] = el)}
                                         className={`transition-colors ${isFilled ? "bg-emerald-50/5 dark:bg-emerald-900/5 border-emerald-500/10" : "bg-amber-50/5 dark:bg-amber-900/5 border-amber-200/20"}`}
                                     />
@@ -107,7 +109,7 @@ const TagInputs = forwardRef<TagInputsHandle, TagInputsProps>(({ tags, values, o
             )}
 
             {/* FILLED / COMMITTED TAGS SECTION */}
-            {filledTags.length > 0 && (
+            {filledTags.length > 0 && !hideFilled && (
                 <div className="bg-white dark:bg-gray-800/30 rounded-2xl border border-gray-200 dark:border-gray-700/40 overflow-hidden shadow-sm transition-all">
                     <button
                         onClick={() => setIsFilledOpen(!isFilledOpen)}
