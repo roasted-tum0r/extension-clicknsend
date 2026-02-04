@@ -1,4 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type JSX } from "react";
+import GmailIcon from "../assets/icons/gmail";
+import OutLookIcon from "../assets/icons/outlook";
+import YahooIcon from "../assets/icons/yahoo";
 
 export type EmailProvider = "gmail" | "outlook" | "yahoo" | "default";
 
@@ -7,10 +10,10 @@ interface ProviderSelectProps {
     onChange: (provider: EmailProvider) => void;
 }
 
-const providers: { id: EmailProvider; name: string; icon: string; color: string }[] = [
-    { id: "gmail", name: "Gmail", icon: "📧", color: "text-red-500" },
-    { id: "outlook", name: "Outlook", icon: "🔷", color: "text-blue-500" },
-    { id: "yahoo", name: "Yahoo", icon: "🟣", color: "text-purple-500" },
+const providers: { id: EmailProvider; name: string; icon: string | JSX.Element; color: string }[] = [
+    { id: "gmail", name: "Gmail", icon: <GmailIcon />, color: "text-red-500" },
+    { id: "outlook", name: "Outlook", icon: <OutLookIcon />, color: "text-blue-500" },
+    { id: "yahoo", name: "Yahoo", icon: <YahooIcon />, color: "text-purple-500" },
     { id: "default", name: "Default", icon: "🖥️", color: "text-gray-500" },
 ];
 
