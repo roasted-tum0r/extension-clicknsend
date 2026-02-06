@@ -9,7 +9,8 @@ interface HeaderProps {
 
 export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   // Debounced Zoom Logic
   const [localZoom, setLocalZoom] = useState(zoom);
@@ -37,14 +38,14 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
   // Close when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (menuRef.current && !menuRef.current.contains(target) && triggerRef.current && !triggerRef.current.contains(target)) {
         setIsMenuOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
+    return () => document.removeEventListener("pointerdown", handleClickOutside);
   }, []);
-
   return (
     <header
       id="clicksend-header"
@@ -57,6 +58,7 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
         {/* Left: Burger Menu */}
         <div className="relative">
           <button
+            ref={triggerRef}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className={`relative z-50 p-2 transition-all duration-200 cursor-pointer -ml-2 w-10 h-10 flex items-center justify-center rounded-xl
                             ${isMenuOpen ? 'bg-gray-200 dark:bg-gray-700 text-slate-800 dark:text-white' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800'}
@@ -78,7 +80,7 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
               />
 
               {/* Dropdown Panel */}
-              <div className="absolute left-0 top-12 w-64 origin-top-left animate-dropdown-enter z-50 text-left cursor-default">
+              <div ref={menuRef} className="absolute left-0 top-12 w-64 origin-top-left animate-dropdown-enter z-50 text-left cursor-default">
                 <div className="bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-4 ring-1 ring-black/5">
                   <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 pl-1">
                     Settings & Appearance
