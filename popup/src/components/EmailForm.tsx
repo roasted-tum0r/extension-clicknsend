@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import NestedTemplateSelect from "./NestedTemplateSelect";
 import SendButton from "./SendButton";
-import { Input } from "./Input";
 import ProviderSelect from "./ProviderSelect";
 import type { EmailProvider } from "./ProviderSelect";
 import { FULL_REGISTRY } from "../features/mail-composer/templates";
@@ -11,10 +10,13 @@ import { getStoredTags, setStoredTags } from "../features/mail-composer/storage"
 import TagInputs from "./TagInputs";
 import type { TagInputsHandle } from "./TagInputs";
 import TokenizedBlockEditor from "./TokenizedBlockEditor";
+import EmailRecipientInput from "./EmailRecipientInput";
 
 export default function EmailForm({ initialEmail, theme }: { initialEmail?: string, theme: string }) {
   // recipient state
-  const [recipient, setRecipient] = useState(initialEmail || "");
+  const [to, setTo] = useState<string[]>([]);
+  const [cc, setCc] = useState<string[]>([]);
+  const [bcc, setBcc] = useState<string[]>([]);
   const [loading, setLoading] = useState(!initialEmail);
   const [provider, setProvider] = useState<EmailProvider>(() => {
     return (localStorage.getItem("clicksend_provider") as EmailProvider) || "gmail";
@@ -26,6 +28,7 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
   const [detectedTags, setDetectedTags] = useState<string[]>([]);
   const [tagValues, setTagValues] = useState<Record<string, string>>({});
   const [isTemplateSelectOpen, setIsTemplateSelectOpen] = useState(false);
+  const [isRecipientValid, setIsRecipientValid] = useState(true);
 
   const tagInputsRef = useRef<TagInputsHandle>(null);
 
@@ -34,39 +37,43 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
     getStoredTags().then(setTagValues);
   }, []);
 
-  // Recipient sync (omitted for brevity in this call, but keep logic)
+  // Recipient sync
   useEffect(() => {
     if (initialEmail) {
-      setRecipient(initialEmail);
+      setTo([initialEmail]);
       setLoading(false);
       return;
     }
     setLoading(true);
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.get(['clicksend_last_recipient'], (result) => {
+      chrome.storage.local.get(['clicksend_last_recipient', 'clicksend_last_cc', 'clicksend_last_bcc'], (result) => {
         if (result && result.clicksend_last_recipient) {
-          setRecipient(result.clicksend_last_recipient as string);
-        } else {
-          const local = localStorage.getItem("clicksend_last_recipient");
-          if (local) setRecipient(local);
+          const rec = result.clicksend_last_recipient;
+          setTo(Array.isArray(rec) ? rec : [rec]);
         }
+        if (result && Array.isArray(result.clicksend_last_cc)) setCc(result.clicksend_last_cc);
+        if (result && Array.isArray(result.clicksend_last_bcc)) setBcc(result.clicksend_last_bcc);
         setLoading(false);
       });
     } else {
-      const local = localStorage.getItem("clicksend_last_recipient");
-      if (local) setRecipient(local);
+      const localTo = localStorage.getItem("clicksend_last_recipient");
+      if (localTo) setTo([localTo]);
       setLoading(false);
     }
   }, [initialEmail]);
 
   useEffect(() => {
-    if (recipient) {
+    if (to.length > 0) {
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-        chrome.storage.local.set({ 'clicksend_last_recipient': recipient });
+        chrome.storage.local.set({
+          'clicksend_last_recipient': to,
+          'clicksend_last_cc': cc,
+          'clicksend_last_bcc': bcc
+        });
       }
-      localStorage.setItem("clicksend_last_recipient", recipient);
+      localStorage.setItem("clicksend_last_recipient", to[0]); // Keep legacy compat for first
     }
-  }, [recipient]);
+  }, [to, cc, bcc]);
 
   useEffect(() => {
     localStorage.setItem("clicksend_provider", provider);
@@ -133,34 +140,44 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
     const encode = encodeURIComponent;
     const finalSubject = processedSubject;
     const finalMessage = processedMessage;
+
+    const toStr = to.join(",");
+    const ccStr = cc.join(",");
+    const bccStr = bcc.join(",");
+
     if (provider === "gmail") {
       const params = new URLSearchParams();
       params.append("view", "cm");
       params.append("fs", "1");
-      if (recipient) params.append("to", recipient);
+      if (toStr) params.append("to", toStr);
+      if (ccStr) params.append("cc", ccStr);
+      if (bccStr) params.append("bcc", bccStr);
       if (finalSubject) params.append("su", finalSubject);
       if (finalMessage) params.append("body", finalMessage);
       window.open(`https://mail.google.com/mail/?${params.toString()}`, "_blank");
     } else if (provider === "outlook") {
-      const url = `https://outlook.office.com/mail/deeplink/compose?to=${encode(recipient)}&subject=${encode(finalSubject)}&body=${encode(finalMessage)}`;
+      const url = `https://outlook.office.com/mail/deeplink/compose?to=${encode(toStr)}&cc=${encode(ccStr)}&bcc=${encode(bccStr)}&subject=${encode(finalSubject)}&body=${encode(finalMessage)}`;
       window.open(url, "_blank");
     } else if (provider === "yahoo") {
-      const url = `https://compose.mail.yahoo.com/?to=${encode(recipient)}&subject=${encode(finalSubject)}&body=${encode(finalMessage)}`;
+      const url = `https://compose.mail.yahoo.com/?to=${encode(toStr)}&cc=${encode(ccStr)}&bcc=${encode(bccStr)}&subject=${encode(finalSubject)}&body=${encode(finalMessage)}`;
       window.open(url, "_blank");
     } else {
-      const url = `mailto:${encode(recipient)}?subject=${encode(finalSubject)}&body=${encode(finalMessage)}`;
+      const url = `mailto:${encode(toStr)}?cc=${encode(ccStr)}&bcc=${encode(bccStr)}&subject=${encode(finalSubject)}&body=${encode(finalMessage)}`;
       window.open(url, "_self");
     }
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <Input
-        label="Recipient"
-        value={loading ? "Loading..." : recipient}
-        onChange={setRecipient}
-        placeholder={loading ? "Loading email..." : "Type the email here! Example: [EMAIL_ADDRESS]"}
-        type="email"
+      <EmailRecipientInput
+        to={to}
+        cc={cc}
+        bcc={bcc}
+        setTo={setTo}
+        setCc={setCc}
+        setBcc={setBcc}
+        onValidationChange={setIsRecipientValid}
+        loading={loading}
       />
       <NestedTemplateSelect
         value={template}
@@ -220,7 +237,7 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
         <SendButton
           onClick={handleSend}
           provider={provider}
-          disabled={!recipient || message.length < 1 || subject.length < 1 || template.length < 1 || hasTagsLeft}
+          disabled={!isRecipientValid || to.length === 0 || message.length < 1 || subject.length < 1 || template.length < 1 || hasTagsLeft}
           theme={theme}
         />
       </div>
