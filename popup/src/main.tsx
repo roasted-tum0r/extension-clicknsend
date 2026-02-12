@@ -5,7 +5,7 @@ import App from './App.tsx'
 
 let currentRoot: any = null;
 
-const mount = (containerId: string, initialEmail?: string, shadowRoot?: ShadowRoot) => {
+const mount = (containerId: string, initialEmail?: string, shadowRoot?: ShadowRoot, rawText?: string) => {
   const rootElement = shadowRoot
     ? shadowRoot.getElementById(containerId)
     : document.getElementById(containerId);
@@ -25,7 +25,7 @@ const mount = (containerId: string, initialEmail?: string, shadowRoot?: ShadowRo
   currentRoot = createRoot(rootElement);
   currentRoot.render(
     <StrictMode>
-      <App initialEmail={initialEmail} />
+      <App initialEmail={initialEmail} rawText={rawText} />
     </StrictMode>,
   );
 };
@@ -67,6 +67,7 @@ window.addEventListener("CLICKSEND_SHOULD_MOUNT", (e: Event) => {
 
   const containerId = detail?.containerId || "clicksend-root";
   const email = detail?.email;
+  const rawText = (detail as any)?.rawText;
 
   // Fallback for shadowRoot if detail is null or missing it
   let shadowRoot = detail?.shadowRoot;
@@ -78,7 +79,7 @@ window.addEventListener("CLICKSEND_SHOULD_MOUNT", (e: Event) => {
     }
   }
 
-  mount(containerId, email, shadowRoot);
+  mount(containerId, email, shadowRoot, rawText);
 });
 
 window.addEventListener("CLICKSEND_SHOULD_UNMOUNT", () => {

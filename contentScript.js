@@ -61,7 +61,11 @@ function injectReactPopup(email) {
   host.style.zIndex = "2147483647"; // Max z-index
   host.style.overflow = "hidden"; // Clip content during resize
   host.style.borderRadius = "14px";
-  host.style.boxShadow = "none"; // Shadow is on the rootDiv
+  host.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)";
+
+  // Sync theme attribute for CSS fallback
+  const savedTheme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  host.setAttribute("theme", savedTheme);
 
   document.body.appendChild(host);
 
@@ -76,13 +80,19 @@ function injectReactPopup(email) {
     }
     #clicksend-root {
       font-family: inherit;
-      color-scheme: dark !important;
+      color-scheme: dark light !important;
       isolation: isolate;
+      background: white; /* Fallback for light mode */
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    :host([theme="dark"]) #clicksend-root {
+      background: #0f172a; /* Fallback for dark mode */
     }
     .clicksend-resizer {
   width: 20px; /* Increased size for easier grab */
   height: 20px;
-  background: transparent; /* Change to 'red' to test hit area */
+  background: transparent;
   position: absolute;
   right: 0;
   bottom: 0;

@@ -11,8 +11,9 @@ import TagInputs from "./TagInputs";
 import type { TagInputsHandle } from "./TagInputs";
 import TokenizedBlockEditor from "./TokenizedBlockEditor";
 import EmailRecipientInput from "./EmailRecipientInput";
+import { JobParser, type JobPacket } from "../utils/JobParser";
 
-export default function EmailForm({ initialEmail, theme }: { initialEmail?: string, theme: string }) {
+export default function EmailForm({ initialEmail, rawText, theme }: { initialEmail?: string, rawText?: string, theme: string }) {
   // recipient state
   const [to, setTo] = useState<string[]>([]);
   const [cc, setCc] = useState<string[]>([]);
@@ -37,8 +38,31 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
     getStoredTags().then(setTagValues);
   }, []);
 
-  // Recipient sync
+  // Parsing and Initial Packets
+  const [packets, setPackets] = useState<JobPacket[]>([]);
+  const [currentPacketIdx, setCurrentPacketIdx] = useState(0);
+
   useEffect(() => {
+    if (rawText) {
+      const foundPackets = JobParser.parse(rawText);
+      setPackets(foundPackets);
+      if (foundPackets.length > 0) {
+        const p = foundPackets[0];
+        if (p.email) setTo([p.email]);
+        const newTags = { ...tagValues };
+        if (p.role) newTags["role"] = p.role;
+        if (p.company) newTags["company"] = p.company;
+        setTagValues(newTags);
+        setTemplate("job_apply_specific_role");
+        const t = FULL_REGISTRY["job_apply_specific_role"];
+        setSubject(t.draft.subject);
+        setMessage(t.draft.body);
+        setDetectedTags(extractTags(t.draft.subject + "\n" + t.draft.body));
+      }
+      setLoading(false);
+      return;
+    }
+
     if (initialEmail) {
       setTo([initialEmail]);
       setLoading(false);
@@ -60,7 +84,20 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
       if (localTo) setTo([localTo]);
       setLoading(false);
     }
-  }, [initialEmail]);
+  }, [initialEmail, rawText, tagValues]); // Corrected dependencies
+
+  const handlePacketSwitch = (idx: number) => {
+    const p = packets[idx];
+    if (!p) return;
+    setCurrentPacketIdx(idx);
+
+    // Update fields
+    if (p.email) setTo([p.email]);
+    const newTags = { ...tagValues };
+    if (p.role) newTags["role"] = p.role;
+    if (p.company) newTags["company"] = p.company;
+    setTagValues(newTags);
+  };
 
   useEffect(() => {
     if (to.length > 0) {
@@ -169,6 +206,38 @@ export default function EmailForm({ initialEmail, theme }: { initialEmail?: stri
 
   return (
     <div className="flex flex-col gap-4">
+      {packets.length > 1 && (
+        <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-xl mb-1 animate-in slide-in-from-top-2 duration-300">
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">
+              Multiple Jobs Detected
+            </span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">
+              Packet {currentPacketIdx + 1} of {packets.length}
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => handlePacketSwitch(Math.max(0, currentPacketIdx - 1))}
+              disabled={currentPacketIdx === 0}
+              className="p-1.5 rounded-lg bg-white dark:bg-gray-800 border border-slate-200 dark:border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors"
+            >
+              <svg className="w-4 h-4 text-slate-600 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => handlePacketSwitch(Math.min(packets.length - 1, currentPacketIdx + 1))}
+              disabled={currentPacketIdx === packets.length - 1}
+              className="p-1.5 rounded-lg bg-white dark:bg-gray-800 border border-slate-200 dark:border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors"
+            >
+              <svg className="w-4 h-4 text-slate-600 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
       <EmailRecipientInput
         to={to}
         cc={cc}

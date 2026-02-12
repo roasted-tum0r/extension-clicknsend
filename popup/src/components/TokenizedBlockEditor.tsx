@@ -7,6 +7,7 @@ interface TokenizedBlockEditorProps {
     onTagClick?: (tagName: string) => void;
     label?: string;
     placeholder?: string;
+    isShadowRoot?: boolean;
 }
 
 /**
@@ -25,10 +26,17 @@ export default function TokenizedBlockEditor({
     const [isFocused, setIsFocused] = useState(false);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [hasMounted, setHasMounted] = useState(false);
 
     // Save/Restore caret position for seamless typing
     const getCaretData = () => {
-        const selection = window.getSelection();
+        const root = editorRef.current?.getRootNode() as ShadowRoot | Document;
+
+        // Use active selection from the correct root
+        const selection = (root instanceof ShadowRoot)
+            ? (root as any).getSelection?.() || window.getSelection()
+            : window.getSelection();
+
         if (!selection || selection.rangeCount === 0 || !editorRef.current) return null;
 
         const range = selection.getRangeAt(0);
@@ -41,7 +49,11 @@ export default function TokenizedBlockEditor({
 
     const setCaretPosition = (pos: number) => {
         if (!editorRef.current) return;
-        const selection = window.getSelection();
+        const root = editorRef.current.getRootNode() as ShadowRoot | Document;
+        const selection = (root instanceof ShadowRoot)
+            ? (root as any).getSelection?.() || window.getSelection()
+            : window.getSelection();
+
         const range = document.createRange();
 
         let charCount = 0;
@@ -82,13 +94,18 @@ export default function TokenizedBlockEditor({
     // Parse raw template to HTML with pills
     const parseToHTML = useCallback((raw: string) => {
         if (!raw) return "";
-        // Replace newlines with <br> for contenteditable display
-        const textWithBreaks = raw.split("\n").join("<br>");
-        const tokenRegex = /({{[^}]+}})/g;
+        // Clean up any double-newlines or weird formatting that might come from raw injection
+        // Ensure consistent \n line endings
+        const normalized = raw.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
-        const parts = textWithBreaks.split(tokenRegex);
+        // Tokenize while preserving splits accurately
+        const tokenRegex = /({{[^}]+}})/g;
+        const parts = normalized.split(tokenRegex);
+
         return parts.map(part => {
-            console.log(part, "shreyosi got");
+            if (part === "\n") return "<br>";
+            if (!part) return "";
+
             if (part.startsWith('{{') && part.endsWith('}}')) {
                 const tagName = part.slice(2, -2).trim();
                 const tagValue = tagValues[tagName];
@@ -102,24 +119,24 @@ export default function TokenizedBlockEditor({
                 // We store the original {{tag}} in a data attribute so we can reconstruct the string accurately
                 return `<span class="tag-token ${pillClass}" data-raw-tag="${part}" data-tag-name="${tagName}" contenteditable="false">${escapeHTML(displayValue)}</span>`;
             }
-            // Need to preserve <br> elements if they were part of the split text part
-            console.log(part, "this part part");
-            return part; // part already contains <br> from our initial split/join
 
+            // Convert existing newlines to <br> for HTML display
+            return escapeHTML(part).replace(/\n/g, "<br>");
         }).join("");
     }, [tagValues]);
 
     // Value sync with Caret Preservation
     useEffect(() => {
-        if (editorRef.current && !isFocused) {
+        if (editorRef.current && (!isFocused || !hasMounted)) {
             const targetHTML = parseToHTML(value);
             // Instead of comparing raw strings, we compare the generated HTML 
             // to ensure tagValue updates trigger a re-render even if 'value' (the template) is unchanged.
             if (editorRef.current.innerHTML !== targetHTML) {
                 editorRef.current.innerHTML = targetHTML;
             }
+            if (!hasMounted) setHasMounted(true);
         }
-    }, [value, parseToHTML, isFocused]);
+    }, [value, parseToHTML, isFocused, hasMounted]);
 
     // Reconstruct the template string from the DOM
     const reconstructTemplate = () => {
@@ -259,7 +276,7 @@ export default function TokenizedBlockEditor({
                     className="
                         tokenized-editor custom-scrollbar cursor-text min-h-[140px] 
                         p-3 bg-white dark:bg-gray-800/10 border border-gray-200 dark:border-gray-700/50 
-                        rounded-2xl transition-all text-sm leading-relaxed
+                        rounded-2xl transition-all text-sm leading-relaxed whitespace-pre-wrap
                         focus:outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-500/20
                     "
                     spellCheck={false}

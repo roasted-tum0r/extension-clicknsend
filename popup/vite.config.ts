@@ -17,7 +17,7 @@ export default defineConfig(({ command }) => {
               entryFileNames: "index.12345678.js",
               chunkFileNames: "chunks/[name].js",
               assetFileNames: (assetInfo) => {
-                if (assetInfo.names.map((name) => name.endsWith(".css"))) {
+                if (assetInfo.name && assetInfo.name.endsWith(".css")) {
                   return "index.12345678.css";
                 }
                 return "assets/[name][extname]";
