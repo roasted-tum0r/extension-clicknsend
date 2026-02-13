@@ -208,8 +208,9 @@ function setupDraggable(host, shadow) {
     const path = e.composedPath();
     const handle = path.find(el => el.id === "clicksend-header");
     const isButton = path.some(el => ["BUTTON", "INPUT", "SELECT", "A"].includes(el.tagName));
+    const isNoDrag = path.some(el => el.dataset && el.dataset.noDrag === "true");
 
-    if (handle && !isButton) {
+    if (handle && !isButton && !isNoDrag) {
       console.log("Drag: mousedown on handle detected");
       isDragging = true;
       startX = e.clientX;

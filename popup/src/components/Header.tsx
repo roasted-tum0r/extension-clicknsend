@@ -37,15 +37,18 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
 
   // Close when clicking outside
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      const target = event.target as Node;
-      if (menuRef.current && !menuRef.current.contains(target) && triggerRef.current && !triggerRef.current.contains(target)) {
+    function handleClickOutside(event: PointerEvent) {
+      const path = event.composedPath();
+      const isInsideMenu = menuRef.current && path.includes(menuRef.current);
+      const isInsideTrigger = triggerRef.current && path.includes(triggerRef.current);
+
+      if (isMenuOpen && !isInsideMenu && !isInsideTrigger) {
         setIsMenuOpen(false);
       }
     }
-    document.addEventListener("pointerdown", handleClickOutside);
-    return () => document.removeEventListener("pointerdown", handleClickOutside);
-  }, []);
+    document.addEventListener("pointerdown", handleClickOutside as any);
+    return () => document.removeEventListener("pointerdown", handleClickOutside as any);
+  }, [isMenuOpen]); // Added isMenuOpen dependency for safety
   return (
     <header
       id="clicksend-header"
@@ -76,11 +79,18 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
               {/* Backdrop Overlay */}
               <div
                 className="fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-md cursor-default"
+                data-no-drag="true"
+                onMouseDown={(e) => e.stopPropagation()}
                 onClick={() => setIsMenuOpen(false)}
               />
 
               {/* Dropdown Panel */}
-              <div ref={menuRef} className="absolute left-0 top-12 w-64 origin-top-left animate-dropdown-enter z-50 text-left cursor-default">
+              <div
+                ref={menuRef}
+                data-no-drag="true"
+                onMouseDown={(e) => e.stopPropagation()}
+                className="absolute left-0 top-12 w-64 origin-top-left animate-dropdown-enter z-50 text-left cursor-default"
+              >
                 <div className="bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-4 ring-1 ring-black/5">
                   <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 pl-1">
                     Settings & Appearance

@@ -42,49 +42,43 @@ export default function EmailForm({ initialEmail, rawText, theme }: { initialEma
   const [packets, setPackets] = useState<JobPacket[]>([]);
   const [currentPacketIdx, setCurrentPacketIdx] = useState(0);
 
+  // Parsing and Initial Packets - Run ONLY on mount or when rawText changes
   useEffect(() => {
+    let toSet: string[] = [];
+    let tagsSet: Record<string, string> = { ...tagValues };
+    let tempSet: TemplateTypeNew | "" = "";
+    let subSet = "";
+    let msgSet = "";
+
     if (rawText) {
       const foundPackets = JobParser.parse(rawText);
       setPackets(foundPackets);
       if (foundPackets.length > 0) {
         const p = foundPackets[0];
-        if (p.email) setTo([p.email]);
-        const newTags = { ...tagValues };
-        if (p.role) newTags["role"] = p.role;
-        if (p.company) newTags["company"] = p.company;
-        setTagValues(newTags);
-        setTemplate("job_apply_specific_role");
+        if (p.email) toSet = [p.email];
+        if (p.role) tagsSet["role"] = p.role;
+        if (p.company) tagsSet["company"] = p.company;
+        tempSet = "job_apply_specific_role";
         const t = FULL_REGISTRY["job_apply_specific_role"];
-        setSubject(t.draft.subject);
-        setMessage(t.draft.body);
-        setDetectedTags(extractTags(t.draft.subject + "\n" + t.draft.body));
+        subSet = t.draft.subject;
+        msgSet = t.draft.body;
       }
-      setLoading(false);
-      return;
+    } else if (initialEmail) {
+      toSet = [initialEmail];
     }
 
-    if (initialEmail) {
-      setTo([initialEmail]);
-      setLoading(false);
-      return;
+    // Apply defaults if we have something
+    if (toSet.length > 0) setTo(toSet);
+    if (tempSet) {
+      setTemplate(tempSet);
+      setSubject(subSet);
+      setMessage(msgSet);
+      setDetectedTags(extractTags(subSet + "\n" + msgSet));
     }
-    setLoading(true);
-    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.get(['clicksend_last_recipient', 'clicksend_last_cc', 'clicksend_last_bcc'], (result) => {
-        if (result && result.clicksend_last_recipient) {
-          const rec = result.clicksend_last_recipient;
-          setTo(Array.isArray(rec) ? rec : [rec]);
-        }
-        if (result && Array.isArray(result.clicksend_last_cc)) setCc(result.clicksend_last_cc);
-        if (result && Array.isArray(result.clicksend_last_bcc)) setBcc(result.clicksend_last_bcc);
-        setLoading(false);
-      });
-    } else {
-      const localTo = localStorage.getItem("clicksend_last_recipient");
-      if (localTo) setTo([localTo]);
-      setLoading(false);
-    }
-  }, [initialEmail, rawText, tagValues]); // Corrected dependencies
+    setTagValues(tagsSet);
+    setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rawText, initialEmail]); // Remove tagValues from dependencies!
 
   const handlePacketSwitch = (idx: number) => {
     const p = packets[idx];

@@ -77,7 +77,7 @@
 }
 
 /* Outlook-style Tag Tokens */
-.tag-token {
+.open-sesame-anirban-tag-pill {
   display: inline-flex;
   align-items: center;
   padding: 2px 6px;
@@ -92,13 +92,13 @@
 
 
 
-.tag-token:hover {
+.open-sesame-anirban-tag-pill:hover {
   filter: brightness(1.1);
   transform: translateY(-0.5px);
 }
 
 /* Editor Container */
-.tokenized-editor {
+.open-sesame-ultimate-editor-area {
   min-height: 100px;
   max-height: 300px;
   overflow-y: auto;
@@ -107,12 +107,13 @@
   transition: all 0.2s ease;
 }
 
-.dark .tokenized-editor {
+.dark .open-sesame-ultimate-editor-area {
   color: #f3f4f6;
 }
 
-.tokenized-editor:focus {
+.open-sesame-ultimate-editor-area:focus {
   /* Box shadow and border handled by Tailwind */
+  border-color: var(--color-blue-500);
 }
 
 /* Pulse Animations */
@@ -146,7 +147,7 @@
 }
 
 /* Scrollbar utility */
-.custom-scrollbar {
+.open-sesame-smooth-magic-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: rgba(156, 163, 175, 0.2) transparent;
 }
