@@ -42,20 +42,27 @@ function injectReactPopup(email) {
   const OFFSET = 8;
   host.style.position = "fixed";
 
-  // Position logic
-  const rect = { width: 400, height: 600 }; // Estimate or use defaults
+  // Position logic: Stay within viewport
+  const viewW = window.innerWidth;
+  const viewH = window.innerHeight;
+
+  // Initial Dimensions: Respect viewport space but don't choke the growth
+  const initialW = Math.min(450, viewW * 0.9);
+  const initialH = Math.min(650, viewH * 0.9);
+
   let x = lastRightClick.x + OFFSET;
   let y = lastRightClick.y + OFFSET;
 
-  // Simple bounds check
-  if (x + 400 > window.innerWidth) x = window.innerWidth - 400 - OFFSET;
-  if (y + 600 > window.innerHeight) y = window.innerHeight - 600 - OFFSET;
+  // Ensure initial mount stays inside the page
+  if (x + initialW > viewW) x = viewW - initialW - OFFSET;
+  if (y + initialH > viewH) y = viewH - initialH - OFFSET;
 
-  const INITIAL_WIDTH = 420;
-  const INITIAL_HEIGHT = 600;
+  // Safety floor
+  x = Math.max(OFFSET, x);
+  y = Math.max(OFFSET, y);
 
-  host.style.width = `${INITIAL_WIDTH}px`;
-  host.style.height = `${INITIAL_HEIGHT}px`;
+  host.style.width = `${initialW}px`;
+  host.style.height = `${initialH}px`;
   host.style.top = `${y}px`;
   host.style.left = `${x}px`;
   host.style.zIndex = "2147483647"; // Max z-index
@@ -172,8 +179,12 @@ function setupResizable(host, shadow) {
       const dw = moveEvent.clientX - startX;
       const dh = moveEvent.clientY - startY;
 
-      const newWidth = Math.max(300, startWidth + dw);
-      const newHeight = Math.max(400, startHeight + dh);
+      // Allow up to 95% of viewport width/height
+      const maxAllowedW = window.innerWidth * 0.95;
+      const maxAllowedH = window.innerHeight * 0.95;
+
+      const newWidth = Math.min(maxAllowedW, Math.max(320, startWidth + dw));
+      const newHeight = Math.min(maxAllowedH, Math.max(400, startHeight + dh));
 
       host.style.width = `${newWidth}px`;
       host.style.height = `${newHeight}px`;

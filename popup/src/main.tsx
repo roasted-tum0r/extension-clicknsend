@@ -50,9 +50,19 @@ if (host && host.shadowRoot) {
   if (injectedRoot) {
     mount("clicksend-root", injectedRoot.dataset.initialEmail, host.shadowRoot);
   }
+} else if (document.getElementById("clicksend-root")) {
+  // Standalone root (e.g. for testing or different injection method)
+  mount("clicksend-root", (document.getElementById("clicksend-root") as HTMLElement).dataset.initialEmail);
 }
 
-// 3. Lifecycle Listeners
+
+// 3. Fallback for standard web root (Landing Page)
+const webRoot = document.getElementById("root");
+if (webRoot && !host && !document.getElementById("icon-root")) {
+  mount("root");
+}
+
+// 4. Lifecycle Listeners
 interface MountEventDetail {
   email?: string;
   containerId: string;

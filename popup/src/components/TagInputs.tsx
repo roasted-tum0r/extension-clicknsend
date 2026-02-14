@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useImperativeHandle, forwardRef } from "react";
+import { useTheme } from "../context/ThemeContext";
 import { Input } from "./Input";
 
 interface TagInputsProps {
@@ -13,6 +14,7 @@ export interface TagInputsHandle {
 }
 
 const TagInputs = forwardRef<TagInputsHandle, TagInputsProps>(({ tags, values, onChange, hideFilled }, ref) => {
+    const { activeTheme } = useTheme();
     const [isFilledOpen, setIsFilledOpen] = useState(false);
     const [committedTags, setCommittedTags] = useState<Set<string>>(new Set());
     const [focusedTag, setFocusedTag] = useState<string | null>(null);
@@ -70,7 +72,7 @@ const TagInputs = forwardRef<TagInputsHandle, TagInputsProps>(({ tags, values, o
         <div ref={containerRef} className="flex flex-col gap-4 mb-6">
             {/* UNFILLED / ACTIVE TAGS SECTION */}
             {unfilledTags.length > 0 && (
-                <div className="bg-white dark:bg-gray-800/50 rounded-2xl border border-amber-200/50 dark:border-amber-700/30 overflow-hidden shadow-sm transition-all focus-within:ring-2 focus-within:ring-amber-500/20">
+                <div className={`${activeTheme.inputClass} dark:bg-gray-800/50 rounded-2xl border border-amber-200/50 dark:border-amber-700/30 overflow-hidden shadow-sm transition-all focus-within:ring-2 focus-within:ring-amber-500/20`}>
                     <div className="p-4 border-b border-gray-100 dark:border-gray-700/30 bg-amber-50/30 dark:bg-amber-900/10 flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
                             <span className="text-amber-500 animate-pulse">✨</span>
@@ -110,7 +112,7 @@ const TagInputs = forwardRef<TagInputsHandle, TagInputsProps>(({ tags, values, o
 
             {/* FILLED / COMMITTED TAGS SECTION */}
             {filledTags.length > 0 && !hideFilled && (
-                <div className="bg-white dark:bg-gray-800/30 rounded-2xl border border-gray-200 dark:border-gray-700/40 overflow-hidden shadow-sm transition-all">
+                <div className={`${activeTheme.inputClass} dark:bg-gray-800/30 rounded-2xl border border-gray-200 dark:border-gray-700/40 overflow-hidden shadow-sm transition-all`}>
                     <button
                         onClick={() => setIsFilledOpen(!isFilledOpen)}
                         className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"

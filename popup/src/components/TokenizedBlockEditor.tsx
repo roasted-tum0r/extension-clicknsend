@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from "react";
+import { useTheme } from "../context/ThemeContext";
 
 interface TokenizedBlockEditorProps {
     value: string;
@@ -22,6 +23,7 @@ export default function TokenizedBlockEditor({
     label,
     placeholder
 }: TokenizedBlockEditorProps) {
+    const { activeTheme } = useTheme();
     const editorRef = useRef<HTMLDivElement>(null);
     const [isFocused, setIsFocused] = useState(false);
     const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -296,12 +298,12 @@ export default function TokenizedBlockEditor({
                 }}
                 onKeyDown={handleKeyDown}
                 onClick={handleClick}
-                className="
+                className={`
                     open-sesame-ultimate-editor-area open-sesame-smooth-magic-scrollbar cursor-text min-h-[140px] 
-                    p-3 bg-white dark:bg-gray-800/10 border border-gray-200 dark:border-gray-700/50 
+                    p-3 ${activeTheme.inputClass} border border-gray-200 dark:border-gray-700/50 
                     rounded-2xl transition-all text-sm leading-relaxed
                     focus:outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-500/20
-                "
+                `}
                 spellCheck={false}
             />
 

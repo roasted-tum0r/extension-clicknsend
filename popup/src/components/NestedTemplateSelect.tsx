@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from "react";
+import { useTheme } from "../context/ThemeContext";
 import { FULL_REGISTRY, TEMPLATE_LIBRARY, CATEGORY_LABELS } from "../features/mail-composer/templates";
 import type { TemplateCategory } from "../features/mail-composer/types";
 import NoResults from "../assets/icons/noresults";
@@ -31,6 +32,7 @@ const HighlightText = ({ text, search }: { text: string; search: string }) => {
 };
 
 export default function NestedTemplateSelect({ value, onChange, isOpen, onOpenChange }: NestedTemplateSelectProps) {
+    const { activeTheme } = useTheme();
     const [search, setSearch] = useState("");
     const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
     const containerRef = useRef<HTMLDivElement>(null);
@@ -117,7 +119,7 @@ export default function NestedTemplateSelect({ value, onChange, isOpen, onOpenCh
             <button
                 onClick={() => onOpenChange(!isOpen)}
                 className={`group w-full flex items-center justify-between p-3.5 
-                    bg-slate-50 dark:bg-slate-900 
+                    ${activeTheme.inputClass} dark:bg-slate-900/60 
                     border transition-all duration-200 ease-in-out
                     rounded-xl text-left 
                     ${isOpen
@@ -169,15 +171,15 @@ export default function NestedTemplateSelect({ value, onChange, isOpen, onOpenCh
                                     placeholder="Find a template..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-full pl-9 pr-4 py-2.5 
-                                        bg-slate-50 dark:bg-slate-800/80 
+                                    className={`w-full pl-9 pr-4 py-2.5 
+                                        ${activeTheme.inputClass} dark:bg-slate-800/80 
                                         border border-transparent focus:border-blue-200 dark:focus:border-blue-900/50
                                         rounded-lg text-sm font-medium
                                         placeholder-slate-400 dark:placeholder-slate-500
                                         text-slate-900 dark:text-white
                                         focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 
                                         focus:bg-white dark:focus:bg-slate-800
-                                        transition-all duration-200 outline-none"
+                                        transition-all duration-200 outline-none`}
                                 />
                             </div>
                         </div>
@@ -203,7 +205,7 @@ export default function NestedTemplateSelect({ value, onChange, isOpen, onOpenCh
                                             <button
                                                 onClick={() => toggleCategory(cat)}
                                                 className={`
-                                                    w-full flex items-center justify-between px-3 py-2.5 
+                                                    w-full flex items-center justify-between px-3 py-2.5
                                                     rounded-lg transition-all duration-200
                                                     ${expandedCategories[cat]
                                                         ? 'bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-200 shadow-sm'
@@ -296,7 +298,6 @@ export default function NestedTemplateSelect({ value, onChange, isOpen, onOpenCh
                                 </div>
                             )}
                         </div>
-
                         {/* Footer decorative line */}
                         <div className="h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-20 dark:opacity-40"></div>
                     </div>

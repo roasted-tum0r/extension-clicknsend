@@ -1,4 +1,5 @@
 import { useState, useEffect, type KeyboardEvent } from "react";
+import { useTheme } from "../context/ThemeContext";
 
 interface EmailRecipientInputProps {
     to: string[];
@@ -21,6 +22,7 @@ export default function EmailRecipientInput({
     onValidationChange,
     loading
 }: EmailRecipientInputProps) {
+    const { activeTheme } = useTheme();
     const [isExpanded, setIsExpanded] = useState(false);
     const [toInput, setToInput] = useState("");
     const [ccInput, setCcInput] = useState("");
@@ -144,7 +146,7 @@ export default function EmailRecipientInput({
                 </div>
 
                 <div className={`
-          min-h-[42px] p-1.5 flex flex-wrap gap-2 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl
+          min-h-[42px] p-1.5 flex flex-wrap gap-2 ${activeTheme.inputClass} border border-slate-200 dark:border-slate-800 rounded-xl
           focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500/50 transition-all duration-200
           ${loading ? 'opacity-50 pointer-events-none' : ''}
         `}>
@@ -174,7 +176,7 @@ export default function EmailRecipientInput({
                         <label className="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 px-1">
                             Cc
                         </label>
-                        <div className="min-h-[42px] p-1.5 flex flex-wrap gap-2 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500/50 transition-all">
+                        <div className={`min-h-[42px] p-1.5 flex flex-wrap gap-2 ${activeTheme.inputClass} border border-slate-200 dark:border-slate-800 rounded-xl focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500/50 transition-all`}>
                             {renderChips(cc, cc, setCc)}
                             <input
                                 type="text"
@@ -195,7 +197,7 @@ export default function EmailRecipientInput({
                         <label className="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 px-1">
                             Bcc
                         </label>
-                        <div className="min-h-[42px] p-1.5 flex flex-wrap gap-2 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500/50 transition-all">
+                        <div className={`min-h-[42px] p-1.5 flex flex-wrap gap-2 ${activeTheme.inputClass} border border-slate-200 dark:border-slate-800 rounded-xl focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500/50 transition-all`}>
                             {renderChips(bcc, bcc, setBcc)}
                             <input
                                 type="text"

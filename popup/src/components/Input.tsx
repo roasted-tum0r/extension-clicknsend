@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useTheme } from "../context/ThemeContext";
 import TagHighlighter from "./TagHighlighter";
 
 interface Props {
@@ -28,6 +29,7 @@ export function Input({
   onFocus,
   onBlur
 }: Props) {
+  const { activeTheme } = useTheme();
   const internalRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -58,7 +60,7 @@ export function Input({
           onFocus={onFocus}
           onBlur={onBlur}
           className={`
-                        w-full p-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md
+                        w-full p-2 ${activeTheme.inputClass} dark:bg-slate-900/50 border border-gray-300 dark:border-gray-700 rounded-md
                         text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none
                         placeholder-gray-400 dark:placeholder-gray-500 font-sans text-sm
                         ${showHighlighter ? "highlighter-input" : ""}

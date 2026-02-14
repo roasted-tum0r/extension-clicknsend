@@ -1,19 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import NestedTemplateSelect from "./NestedTemplateSelect";
-import SendButton from "./SendButton";
-import ProviderSelect from "./ProviderSelect";
-import type { EmailProvider } from "./ProviderSelect";
 import { FULL_REGISTRY } from "../features/mail-composer/templates";
 import type { TemplateTypeNew } from "../features/mail-composer/types";
 import { extractTags, replaceTags, hasUnfilledTags } from "../features/mail-composer/tag-utils";
 import { getStoredTags, setStoredTags } from "../features/mail-composer/storage";
-import TagInputs from "./TagInputs";
-import type { TagInputsHandle } from "./TagInputs";
+import UnifiedSendButton, { type EmailProvider } from "./UnifiedSendButton";
+import TagInputs, { type TagInputsHandle } from "./TagInputs";
 import TokenizedBlockEditor from "./TokenizedBlockEditor";
 import EmailRecipientInput from "./EmailRecipientInput";
 import { JobParser, type JobPacket } from "../utils/JobParser";
+import { type ThemeMode } from "../constants/theme";
 
-export default function EmailForm({ initialEmail, rawText, theme }: { initialEmail?: string, rawText?: string, theme: string }) {
+export default function EmailForm({ initialEmail, rawText, theme, initialTemplate }: { initialEmail?: string, rawText?: string, theme: ThemeMode, initialTemplate?: TemplateTypeNew }) {
+
   // recipient state
   const [to, setTo] = useState<string[]>([]);
   const [cc, setCc] = useState<string[]>([]);
@@ -50,7 +49,22 @@ export default function EmailForm({ initialEmail, rawText, theme }: { initialEma
     let subSet = "";
     let msgSet = "";
 
-    if (rawText) {
+    // 1. Handle explicit recipient override
+    if (initialEmail) {
+      toSet = [initialEmail];
+    }
+
+    // 2. Handle template or raw text initialization
+    if (initialTemplate) {
+      tempSet = initialTemplate;
+      if (initialTemplate !== "custom") {
+        const t = FULL_REGISTRY[initialTemplate as Exclude<TemplateTypeNew, "custom">];
+        if (t) {
+          subSet = t.draft.subject;
+          msgSet = t.draft.body;
+        }
+      }
+    } else if (rawText) {
       const foundPackets = JobParser.parse(rawText);
       setPackets(foundPackets);
       if (foundPackets.length > 0) {
@@ -59,13 +73,16 @@ export default function EmailForm({ initialEmail, rawText, theme }: { initialEma
         if (p.role) tagsSet["role"] = p.role;
         if (p.company) tagsSet["company"] = p.company;
         tempSet = "job_apply_specific_role";
-        const t = FULL_REGISTRY["job_apply_specific_role"];
+        const t = FULL_REGISTRY[tempSet];
         subSet = t.draft.subject;
         msgSet = t.draft.body;
       }
-    } else if (initialEmail) {
+    } else if (initialEmail && toSet.length === 0) {
+      // Fallback if not already set by packets
       toSet = [initialEmail];
     }
+
+
 
     // Apply defaults if we have something
     if (toSet.length > 0) setTo(toSet);
@@ -78,7 +95,8 @@ export default function EmailForm({ initialEmail, rawText, theme }: { initialEma
     setTagValues(tagsSet);
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rawText, initialEmail]); // Remove tagValues from dependencies!
+  }, [rawText, initialEmail, initialTemplate]); // Added initialTemplate
+
 
   const handlePacketSwitch = (idx: number) => {
     const p = packets[idx];
@@ -295,15 +313,16 @@ export default function EmailForm({ initialEmail, rawText, theme }: { initialEma
         </div>
       )}
 
-      <div className="flex gap-3 mt-2 items-center">
-        <ProviderSelect value={provider} onChange={setProvider} />
-        <SendButton
-          onClick={handleSend}
+      <div className="flex mt-2 items-center">
+        <UnifiedSendButton
           provider={provider}
-          disabled={!isRecipientValid || to.length === 0 || message.length < 1 || subject.length < 1 || template.length < 1 || hasTagsLeft}
+          onProviderChange={setProvider}
+          onSend={handleSend}
+          disabled={!isRecipientValid || (to.length === 0 && !processedMessage) || message.length < 1 || subject.length < 1 || template.length < 1 || hasTagsLeft}
           theme={theme}
         />
       </div>
+
     </div>
   );
 }

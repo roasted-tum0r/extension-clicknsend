@@ -1,4 +1,7 @@
 import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import SunIcon from "../assets/icons/Sun";
+import MoonIcon from "../assets/icons/Moon";
 
 interface HeaderProps {
   theme?: string;
@@ -11,6 +14,7 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const [uniqueLogoId] = useState(() => `logoGradient-${Math.random().toString(36).substring(2, 9)}`);
 
   // Debounced Zoom Logic
   const [localZoom, setLocalZoom] = useState(zoom);
@@ -48,24 +52,27 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
     }
     document.addEventListener("pointerdown", handleClickOutside as any);
     return () => document.removeEventListener("pointerdown", handleClickOutside as any);
-  }, [isMenuOpen]); // Added isMenuOpen dependency for safety
+  }, [isMenuOpen]);
   return (
     <header
       id="clicksend-header"
-      className="mb-0 text-center relative flex flex-col items-center cursor-grab active:cursor-grabbing select-none bg-slate-200/60 backdrop-blur-xl dark:bg-gray-800/50 rounded-t-xl -m-6 p-6 pb-2"
+      className="mb-0 relative z-[70] flex flex-col bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 p-4 select-none cursor-grab active:cursor-grabbing"
       title="Drag to move"
     >
-      {/* Top Controls Row */}
-      <div className="absolute top-0 w-full flex justify-between items-start -mt-2">
+      {/* Top Controls & Logo Row */}
+      <div className="flex justify-between items-center w-full gap-4">
 
-        {/* Left: Burger Menu */}
+        {/* Left: Settings */}
         <div className="relative">
           <button
             ref={triggerRef}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`relative z-50 p-2 transition-all duration-200 cursor-pointer -ml-2 w-10 h-10 flex items-center justify-center rounded-xl
-                            ${isMenuOpen ? 'bg-gray-200 dark:bg-gray-700 text-slate-800 dark:text-white' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800'}
-                        `}
+            className={`
+              relative z-50 p-2 transition-all duration-200 cursor-pointer w-10 h-10 flex items-center justify-center rounded-xl border
+              ${isMenuOpen
+                ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-900/50 shadow-lg shadow-blue-500/10'
+                : 'bg-slate-100 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 border-transparent'}
+            `}
             title="Settings"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,15 +83,13 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
           {/* Settings Menu State */}
           {isMenuOpen && (
             <>
-              {/* Backdrop Overlay */}
               <div
-                className="fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-md cursor-default"
+                className="fixed inset-0 z-40 bg-slate-900/30 backdrop-blur-sm cursor-default"
                 data-no-drag="true"
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={() => setIsMenuOpen(false)}
               />
 
-              {/* Dropdown Panel */}
               <div
                 ref={menuRef}
                 data-no-drag="true"
@@ -105,21 +110,32 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
                       </div>
                       <div
                         onClick={() => toggleTheme()}
-                        className="relative h-10 w-full bg-slate-200 dark:bg-slate-800 rounded-full p-1 cursor-pointer transition-colors duration-300 shadow-inner flex items-center"
+                        className="relative h-11 w-full bg-slate-100 dark:bg-slate-800/80 rounded-xl p-1 cursor-pointer shadow-inner flex items-center group/toggle border border-slate-200 dark:border-slate-700/50"
                       >
-                        {/* Icons Background */}
-                        <div className="absolute inset-0 flex justify-between items-center px-3 pointer-events-none">
-                          <span className="text-base">☀️</span>
-                          <span className="text-sm">🌙</span>
-                        </div>
+                        {/* Sliding Thumb Background with Framer Motion */}
+                        <motion.div
+                          className="absolute h-9 w-[calc(50%-4px)] bg-white dark:bg-blue-600 rounded-lg shadow-sm z-0"
+                          initial={false}
+                          animate={{
+                            x: theme === 'dark' ? '100%' : '0%',
+                            marginLeft: theme === 'dark' ? '0px' : '0px'
+                          }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 30
+                          }}
+                        />
 
-                        {/* Sliding Thumb */}
-                        <div className={`
-                                                    relative w-1/2 h-full bg-white dark:bg-slate-600 rounded-full shadow-md transform transition-transform duration-300 ease-spring
-                                                    flex items-center justify-center
-                                                    ${theme === 'dark' ? 'translate-x-full' : 'translate-x-0'}
-                                                `}>
-                          <span className="text-sm">{theme === 'dark' ? '🌙' : '☀️'}</span>
+                        <div className="relative w-full h-full flex items-center justify-between px-1 z-10">
+                          <div className={`flex-1 flex items-center justify-center gap-2 transition-all duration-300 ${theme === 'light' ? 'text-blue-600 font-bold' : 'text-slate-400'}`}>
+                            <span className="text-sm"><SunIcon /></span>
+                            <span className="text-[10px] uppercase tracking-wider font-extrabold">Light</span>
+                          </div>
+                          <div className={`flex-1 flex items-center justify-center gap-2 transition-all duration-300 ${theme === 'dark' ? 'text-white font-bold' : 'text-slate-400'}`}>
+                            <span className="text-sm"><MoonIcon /></span>
+                            <span className="text-[10px] uppercase tracking-wider font-extrabold">Dark</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -133,7 +149,6 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
                         <span
                           className="text-xs font-bold bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
                           onClick={() => handleZoomChange(1.0)}
-                          title="Click to Reset"
                         >
                           {Math.round(localZoom * 100)}%
                         </span>
@@ -145,19 +160,41 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
                         step="0.05"
                         value={localZoom}
                         onChange={(e) => handleZoomChange(parseFloat(e.target.value))}
-                        onDoubleClick={() => handleZoomChange(1.0)}
-                        className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500 hover:accent-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+                        className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
                       />
-                      <div className="flex justify-between mt-1 px-1">
-                        <button onClick={() => handleZoomChange(Math.max(0.8, localZoom - 0.1))} className="text-[10px] font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">A-</button>
-                        <button onClick={() => handleZoomChange(Math.min(1.5, localZoom + 0.1))} className="text-[10px] font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">A+</button>
-                      </div>
                     </div>
                   )}
                 </div>
               </div>
             </>
           )}
+        </div>
+
+        {/* Center: Brand Logo */}
+        <div className="flex-1 flex justify-center">
+          <svg width="180" height="30" viewBox="0 0 300 40" className="drop-shadow-sm">
+            <defs>
+              <linearGradient id={uniqueLogoId} x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor={theme === 'dark' ? '#a5b4fc' : '#3730a3'} />
+                <stop offset="50%" stopColor={theme === 'dark' ? '#c084fc' : '#7e22ce'} />
+                <stop offset="100%" stopColor={theme === 'dark' ? '#818cf8' : '#312e81'} />
+              </linearGradient>
+            </defs>
+            <text
+              x="50%"
+              y="50%"
+              dominantBaseline="middle"
+              textAnchor="middle"
+              fill={`url(#${uniqueLogoId})`}
+              style={{
+                fontSize: '32px',
+                fontWeight: 900,
+                fontFamily: 'Outfit,Inter, system-ui, sans-serif'
+              }}
+            >
+              SesamE-mail
+            </text>
+          </svg>
         </div>
 
         {/* Right: Close Button */}
@@ -169,42 +206,18 @@ export default function Header({ theme, toggleTheme, zoom = 1, onZoomChange }: H
               window.dispatchEvent(new CustomEvent('CLICKSEND_REQ_CLOSE'));
             }
           }}
-          className="p-2 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors text-2xl font-bold cursor-pointer -mr-2 leading-none rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 w-10 h-10 flex items-center justify-center"
+          className="p-2 bg-slate-100 dark:bg-slate-800/80 border border-transparent text-slate-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-slate-800 transition-all text-2xl font-bold cursor-pointer leading-none rounded-xl w-10 h-10 flex items-center justify-center shadow-sm"
           aria-label="Close"
           title="Close"
         >
-          ×
+          &times;
         </button>
       </div>
 
-      <div className="mt-8 flex justify-center">
-        <svg width="300" height="40" viewBox="0 0 300 40" className="drop-shadow-sm">
-          <defs>
-            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor={theme === 'dark' ? '#a5b4fc' : '#3730a3'} />
-              <stop offset="50%" stopColor={theme === 'dark' ? '#c084fc' : '#7e22ce'} />
-              <stop offset="100%" stopColor={theme === 'dark' ? '#818cf8' : '#312e81'} />
-            </linearGradient>
-          </defs>
-          <text
-            x="50%"
-            y="50%"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            fill="url(#logoGradient)"
-            style={{
-              fontSize: '30px',
-              fontWeight: 800,
-              fontFamily: 'Inter, system-ui, sans-serif'
-            }}
-          >
-            Open SesamE-mail
-          </text>
-        </svg>
-      </div>
-      <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
+      <p className="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2 -mb-1 opacity-80">
         Send emails faster, without thinking twice
       </p>
-    </header>
+    </header >
+
   );
 }
