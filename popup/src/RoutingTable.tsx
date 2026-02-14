@@ -12,7 +12,7 @@ export const RoutingTable = () => {
             <Route path="/welcome" element={<LandingPage />} />
             <Route path="/" element={<Navigate to={isExtension ? "/application" : "/welcome"} replace />} />
             {/* Catch-all for extension injected into random paths */}
-            {isExtension && <Route path="*" element={<Navigate to="/application" replace />} />}
+            <Route path="*" element={isExtension ? <Navigate to="/application" replace /> : <Navigate to="/welcome" replace />} />
         </Routes>
     );
 

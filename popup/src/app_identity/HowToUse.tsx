@@ -95,12 +95,13 @@ export const HowToUse = () => {
                         {/* Decorative Glow */}
                         <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
 
-                        <div className="relative glass-card overflow-hidden border-white/20 shadow-2xl shadow-blue-500/10 min-h-[60%] w-full">
-                            <div className="absolute top-0 left-0 right-0 h-8 bg-white/5 border-b border-white/10 flex items-center px-4 gap-2 z-[60]">
-                                <div className="w-2.5 h-2.5 rounded-full bg-red-400/50" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/50" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-green-400/50" />
-                                <div className="ml-2 text-[10px] text-slate-500 font-mono tracking-wider uppercase">Live Preview</div>
+                        <div className="relative glass-card overflow-hidden border-white/20 shadow-2xl shadow-blue-500/10 min-h-[60%] w-full bg-slate rounded-2xl ">
+                            <div className="absolute top-0 left-0 right-0 h-8 bg-white/5 border-b border-white/10 flex items-center px-4 gap-2 z-[60] rounded-t-2xl">
+                                <span className="flex h-2 w-2 relative">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+                                </span>
+                                <span className="rounded-full ml-2 text-[15px] font-bold text-black font-mono tracking-wider pastelcase">See It in Action</span>
                             </div>
                             <div className="pt-8 h-full">
                                 <Application initialTemplate={activeTemplate} initialEmail={activeEmail} />

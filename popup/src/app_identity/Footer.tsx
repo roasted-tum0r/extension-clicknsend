@@ -1,4 +1,7 @@
-import { Github, Twitter, Linkedin, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
+import FacebookIconNew from '../assets/icons/Facebook';
+import GithubIconNew from '../assets/icons/Github';
+import LinkedInIconNew from '../assets/icons/LinkedIn';
 
 export const Footer = () => {
     return (
@@ -16,19 +19,22 @@ export const Footer = () => {
 
                 <div className="flex flex-col items-center md:items-end gap-6">
                     <div className="flex gap-4">
-                        <a href="#" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
-                            <Github className="w-5 h-5" />
+                        <a href="https://github.com/roasted-tum0r" target="_blank"
+                            rel="noopener noreferrer" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
+                            <GithubIconNew />
                         </a>
-                        <a href="#" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
-                            <Twitter className="w-5 h-5" />
+                        <a href="https://www.facebook.com/share/1B2mmEYvr1/" target="_blank"
+                            rel="noopener noreferrer" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
+                            <FacebookIconNew />
                         </a>
-                        <a href="#" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
-                            <Linkedin className="w-5 h-5" />
+                        <a href="https://www.linkedin.com/in/anirban-samaddar-580173211" target="_blank"
+                            rel="noopener noreferrer" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
+                            <LinkedInIconNew />
                         </a>
                     </div>
 
                     <a
-                        href="https://your-portfolio-link.com"
+                        href="https://anirban-roast-portfolio.netlify.app/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-colors font-medium"
