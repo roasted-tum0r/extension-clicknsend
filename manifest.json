@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Open SesamE-mail",
-  "version": "1.3.0",
+  "version": "2.0.1",
   "description": "Right-click an email and send emails using templates. One step closer to being so lazy about sending mails.",
   "permissions": [
     "contextMenus",
