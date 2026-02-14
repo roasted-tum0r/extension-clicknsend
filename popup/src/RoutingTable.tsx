@@ -26,9 +26,9 @@ export const RoutingTable = () => {
             ) : (
                 <BrowserRouter>
                     {routes}
+                    <Analytics />
                 </BrowserRouter>
             )}
-            <Analytics />
         </>
     );
 }
