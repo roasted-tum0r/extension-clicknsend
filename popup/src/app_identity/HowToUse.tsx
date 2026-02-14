@@ -10,12 +10,12 @@ const steps = [
         description: "Navigate to any job post or email. Simply highlight the text or right-click directly on an email address to activate."
     },
     {
-        title: "AI Analysis",
-        description: "Our engine instantly identifies key details: roles, companies, and contact info. No manual input required."
+        title: "Smart Extraction",
+        description: "Our engine instantly identifies key details: roles, companies, and contact info with programmatic precision."
     },
     {
         title: "Select your Strategy",
-        description: "Choose from our high-conversion template library or let AI craft a personalized response in seconds."
+        description: "Choose from our high-conversion template library to craft the perfect personalized response in seconds."
     },
     {
         title: "Hit Send, Stay Productive",
@@ -69,7 +69,7 @@ export const HowToUse = () => {
                             ))}
                         </div>
 
-                        <div className="mt-12 p-6 glass-card border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 transition-colors cursor-pointer group" onClick={triggerCollaboration}>
+                        <div className="mt-12 p-6 rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-indigo-500/5 hover:from-blue-500/15 hover:to-indigo-500/10 transition-all duration-300 cursor-pointer group shadow-lg shadow-blue-500/5" onClick={triggerCollaboration}>
                             <p className="text-slate-300 mb-4 font-medium italic group-hover:text-white transition-colors">
                                 "Hey, developers! This is a community project. Want to contribute?"
                             </p>
@@ -95,7 +95,7 @@ export const HowToUse = () => {
                         {/* Decorative Glow */}
                         <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
 
-                        <div className="relative glass-card overflow-hidden border-white/20 shadow-2xl shadow-blue-500/10 h-[600px] w-full">
+                        <div className="relative glass-card overflow-hidden border-white/20 shadow-2xl shadow-blue-500/10 min-h-[60%] w-full">
                             <div className="absolute top-0 left-0 right-0 h-8 bg-white/5 border-b border-white/10 flex items-center px-4 gap-2 z-[60]">
                                 <div className="w-2.5 h-2.5 rounded-full bg-red-400/50" />
                                 <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/50" />

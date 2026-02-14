@@ -65,18 +65,18 @@ export const Hero = () => {
 
                 <div className="mt-16 flex flex-col items-center gap-4">
                     <div className="flex flex-wrap items-center justify-center gap-6 px-6 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <div className="flex items-center gap-2 group">
+                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/5 border border-green-500/20 group hover:bg-green-500/10 transition-all duration-300">
                             <span className="flex h-2 w-2 relative">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
                             </span>
                             <a
                                 href="https://chromewebstore.google.com/detail/lmmkennfkdipenjicgdajinapippelbo"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-slate-300 text-xs font-bold tracking-wider hover:text-white transition-colors"
+                                className="text-green-400 text-[10px] font-black tracking-widest hover:text-green-300 transition-colors"
                             >
-                                CHROME EXTENSION <span className="text-green-400">— ACTIVE</span>
+                                CHROME EXTENSION <span className="text-green-500/80">— ACTIVE</span>
                             </a>
                         </div>
 
