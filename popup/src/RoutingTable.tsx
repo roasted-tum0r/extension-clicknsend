@@ -2,13 +2,14 @@ import { BrowserRouter, MemoryRouter, Route, Routes, Navigate } from "react-rout
 import LandingPage from "./app_identity/LandingPage"
 import Application from "./Application"
 import { useExtensionData } from "./ExtensionDataContext"
+import { Analytics } from "@vercel/analytics/react"
 
 export const RoutingTable = () => {
     const { isExtension } = useExtensionData();
 
     const routes = (
         <Routes>
-            <Route path="/application" element={<Application />} />
+            {isExtension && <Route path="/application" element={<Application />} />}
             <Route path="/welcome" element={<LandingPage />} />
             <Route path="/" element={<Navigate to={isExtension ? "/application" : "/welcome"} replace />} />
             {/* Catch-all for extension injected into random paths */}
@@ -16,18 +17,19 @@ export const RoutingTable = () => {
         </Routes>
     );
 
-    if (isExtension) {
-        return (
-            <MemoryRouter initialEntries={["/application"]}>
-                {routes}
-            </MemoryRouter>
-        );
-    }
-
     return (
-        <BrowserRouter>
-            {routes}
-        </BrowserRouter>
-    )
+        <>
+            {isExtension ? (
+                <MemoryRouter initialEntries={["/application"]}>
+                    {routes}
+                </MemoryRouter>
+            ) : (
+                <BrowserRouter>
+                    {routes}
+                </BrowserRouter>
+            )}
+            <Analytics />
+        </>
+    );
 }
 

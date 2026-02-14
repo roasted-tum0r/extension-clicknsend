@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { RoutingTable } from "./RoutingTable";
 import { ExtensionDataProvider } from "./ExtensionDataContext";
 import { ThemeProvider } from "./context/ThemeContext";
-
+// import { Analytics } from "@vercel/analytics/next";
 function App({ initialEmail, rawText }: { initialEmail?: string, rawText?: string }) {
   const isExtension = !!(
     (typeof chrome !== 'undefined' && chrome.runtime?.id) ||
