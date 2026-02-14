@@ -275,11 +275,11 @@ export default function TokenizedBlockEditor({
         <div className="open-sesame-samaddar-editor-container relative mb-4">
             {label && (
                 <div className="flex items-center justify-between mb-1.5 px-0.5">
-                    <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="text-[13px] font-bold text-grey-300 dark:text-gray-600 uppercase tracking-widest">
                         {label}
                     </label>
                     <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                        <span className="h-1.5 w-1.5 rounded-full bg-purple-500 animate-pulse"></span>
                         Smart Editor
                     </span>
                 </div>

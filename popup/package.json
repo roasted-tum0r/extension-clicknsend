@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && cross-env VITE_BUILD_TARGET=extension vite build && cross-env VITE_BUILD_TARGET=web vite build",
-    "build:extension": "cross-env VITE_BUILD_TARGET=extension vite build",
+    "build:ext": "cross-env VITE_BUILD_TARGET=extension vite build",
     "build:web": "cross-env VITE_BUILD_TARGET=web vite build",
     "lint": "eslint .",
     "preview": "vite preview"

@@ -134,7 +134,7 @@ export default function EmailRecipientInput({
             {/* TO SECTION */}
             <div className="group">
                 <div className="flex items-center justify-between mb-1.5 px-1">
-                    <label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                    <label className="text-[13px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
                         Recipient (To)
                     </label>
                     <button

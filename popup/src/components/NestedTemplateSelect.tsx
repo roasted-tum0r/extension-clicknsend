@@ -111,7 +111,7 @@ export default function NestedTemplateSelect({ value, onChange, isOpen, onOpenCh
 
     return (
         <div className="relative mb-6" ref={containerRef}>
-            <label className="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2 px-1">
+            <label className="block text-[13px] font-bold text-slate dark:text-slate-400 uppercase tracking-widest mb-2 px-1">
                 Select Email Template
             </label>
 
