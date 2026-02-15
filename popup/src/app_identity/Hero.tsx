@@ -57,8 +57,11 @@ export const Hero = () => {
                         Get Started Free
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </a>
-                    <button className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-full font-bold text-lg transition-all backdrop-blur-sm flex items-center gap-2">
-                        Watch Demo
+                    <button
+                        onClick={() => document.getElementById('how')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-full font-bold text-lg transition-all backdrop-blur-sm flex items-center gap-2"
+                    >
+                        Watch Live
                         <Mail className="w-5 h-5" />
                     </button>
                 </div>

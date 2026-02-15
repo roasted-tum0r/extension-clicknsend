@@ -31,9 +31,14 @@ const LandingPage = () => {
           <a href="#about" className="hover:text-white transition-colors">About</a>
           <a href="#how" className="hover:text-white transition-colors">How it works</a>
           <a href="#opensource" className="hover:text-white transition-colors">Open Source</a>
-          <button className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-full transition-all">
+          <a
+            href="https://chromewebstore.google.com/detail/lmmkennfkdipenjicgdajinapippelbo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-full transition-all"
+          >
             Try Now
-          </button>
+          </a>
         </div>
       </nav>
 
