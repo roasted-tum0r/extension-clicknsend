@@ -34,7 +34,7 @@ export const Footer = () => {
                     </div>
 
                     <a
-                        href="https://anirban-roast-portfolio.netlify.app/"
+                        href="https://roast-portfolio-smoky.vercel.app/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-colors font-medium"
