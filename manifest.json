@@ -23,6 +23,9 @@
       ]
     }
   ],
+  "icons": {
+    "16": "dist/popup/opensesame-mail.svg"
+  },
   "web_accessible_resources": [
     {
       "resources": [

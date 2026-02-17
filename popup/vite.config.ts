@@ -8,6 +8,11 @@ export default defineConfig(({ command }) => {
   return {
     base: "./",
     plugins: [react()],
+    server: {
+      port: 3000,
+      strictPort: true,
+      host: "127.0.0.1",
+    },
     build:
       command === "build"
         ? {
