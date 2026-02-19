@@ -2,7 +2,6 @@ import { BrowserRouter, MemoryRouter, Route, Routes, Navigate } from "react-rout
 import LandingPage from "./app_identity/LandingPage"
 import Application from "./Application"
 import { useExtensionData } from "./ExtensionDataContext"
-import { Analytics } from "@vercel/analytics/react"
 
 export const RoutingTable = () => {
     const { isExtension } = useExtensionData();
@@ -28,7 +27,6 @@ export const RoutingTable = () => {
                     {routes}
                 </BrowserRouter>
             )}
-            <Analytics />
         </>
     );
 }
